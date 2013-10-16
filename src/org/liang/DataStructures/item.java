@@ -1,9 +1,7 @@
-package dist;
+package org.liang.DataStructures;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-
 
 public class item{
 
@@ -103,11 +101,9 @@ public class item{
 		int otherObjID = ((item) other).objectID;	
 		
 		//System.out.println(" in equals this objectID = "+ this.objectID+"  other objectID = "+otherObjID  );
-		EqualsBuilder builder = new EqualsBuilder().append(this.objectID, otherObjID);   			
-		return builder.isEquals();
 
-			//if(otherObjID == this.objectID) return true;
-		//else return false;
+		if(otherObjID == this.objectID) return true;
+		else return false;
 	}
 
 
@@ -156,8 +152,6 @@ public class item{
 	public static class partialInfo{
 
 	public ArrayList<instance> instances;
-	public instance.point min;
-	public instance.point max;
 
 	public boolean Exist_min = false;
 	public boolean Exist_max = false;

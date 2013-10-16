@@ -1,9 +1,9 @@
-package dist;
+package org.liang.DataStructures;
 
 import java.io.Serializable;
 import java.io.ObjectOutputStream;
 
-public class instance{
+public class instance implements Serializable{
 
 	public int objectID;
 	public int instanceID;
@@ -33,6 +33,21 @@ public class instance{
 		a_point.setPoint(coord);	
 	}
 
+	public void setInstanceID(int a_id){
+		
+		instanceID = a_id;
+	}
+
+	public void setObjectID(int a_id){
+		
+		objectID = a_id;
+	}
+	
+	public void setProb(double a_prob){
+		
+		prob = a_prob;
+	}
+	
 	public instance(point a_point){
 		this.a_point = a_point;	
 	}
