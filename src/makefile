@@ -1,4 +1,4 @@
-JARS = .:../lib/protobuf-java-2.5.0.jar#:../lib/commons-logging-1.1.1-javadoc.jar:../lib/commons-logging-1.1.1-sources.jar:../lib/commons-logging-adapters-1.1.1.jar:../lib/commons-logging-api-1.1.1.jar:../lib/commons-logging-tests.jar
+JARS = .:../lib/uncommons-maths-1.2.3.jar:../lib/commons-lang3-3.1.jar:../lib/slf4j-api-1.7.5.jar:../lib/slf4j-simple-1.7.5.jar:../lib/commons-io-2.4.jar
 
 JFLAGS = -d ../bin/ -cp $(JARS) 
 JC = javac
@@ -9,13 +9,13 @@ JC = javac
 	$(JC) $(JFLAGS) $< 
 
 CLASSES = \
-		org/liang/SocketMonitor/ServerManager.java\
-		org/liang/SocketMonitor/ServerSocketHandler.java\
-		org/liang/SocketMonitor/ServerSocketListener.java\
-		org/liang/SocketMonitor/Command.java\
-		org/liang/SocketMonitor/CommandSender.java\
-		org/liang/SocketMonitor/GrepCommand.java\
-		org/liang/SocketMonitor/MachineCommand.java
+		org/liang/GenerateData/instanceGenerator.java\
+		org/liang/GenerateData/SplitData.java\
+		org/liang/IO/TextInstanceReader.java\
+		org/liang/IO/TextInstanceWriter.java\
+		org/liang/DataStructures/instance.java\
+		org/liang/DataStructures/PartitionInfo.java\
+		org/liang/DataStructures/item.java
 
 default: classes
 
@@ -24,8 +24,3 @@ classes: $(CLASSES:.java=.class)
 clean:
 	rm *~; rm -rf ../bin/*
 
-writeProtoc:
-	javac -cp .:../lib/protobuf-java-2.5.0.jar -d ../bin/ org/liang/AddMachine.java
-
-readProtoc:
-	javac -cp .:../lib/protobuf-java-2.5.0.jar -d ../bin/ org/liang/ReadMachine.java

@@ -1,3 +1,5 @@
+package org.liang.GenerateData;
+
 import org.uncommons.maths.random.GaussianGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import java.util.Random;
@@ -15,6 +17,8 @@ import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import org.liang.DataStructures.instance;
+import org.liang.IO.TextInstanceWriter;
 
 public class instanceGenerator{
 	private Random rng;
@@ -38,7 +42,6 @@ public class instanceGenerator{
 		return this.GG.nextValue();	
 	}
 
-
 	public instance.point gen_a_instance(instance.point a_center, double edgeSize){
 	
 		double halfEdge = edgeSize / 2;
@@ -50,7 +53,6 @@ public class instanceGenerator{
 
 			double a_value;
 			while(true){
-
 				a_value = instDimGen.nextValue();
 				if( a_center.__coordinates[i]+a_value > 0 && a_center.__coordinates[i]+a_value<1) break;
 			}
@@ -58,7 +60,6 @@ public class instanceGenerator{
 		pt.setValue(a_center, i, a_value);
 		}
 		return pt;
-	
 	}
 
 	public double[] randomFixedSum(int a_num){
@@ -122,7 +123,7 @@ public class instanceGenerator{
 				a_center.setPoint(center);
 				int instanceNum = (int)Math.round( CUFG.nextValue() );
 
-				double edgeWidth = generateEdgeWidth();
+				double edgeWidth = IG.generateEdgeWidth();
 				double prob[] = IG.randomFixedSum(instanceNum);
 
 				for(int j=0; j<instanceNum; j++){
@@ -132,13 +133,14 @@ public class instanceGenerator{
 					ret_instance.setInstanceID(instanceID);
 					ret_instance.setObjectID(i);
 					ret_instance.setProb(prob[j]);
-
+					//System.out.println(ret_instance.toString());
 					TIW.write(ret_instance);
 					instanceID += 1;
 				}
 			}
 
 		}
+		TIW.close();
 		br.close();	
 	   }catch (FileNotFoundException foef){
 		foef.printStackTrace();

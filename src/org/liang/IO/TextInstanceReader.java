@@ -9,19 +9,26 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
+import java.util.List;
+
 public class TextInstanceReader{
 
 	private String inputFile;
 	private BufferedReader br;
 	private int dim;
 
-	public TextInstanceReader(String inputFile) {
+	public TextInstanceReader(String inputFile) throws IOException {
 		this.inputFile = inputFile;
 		initialize();
 	}
 
 	public void setDim(int a_dim){
 		dim = a_dim;	
+	}
+
+	public String readLine()throws FileNotFoundException, IOException {
+		
+		return br.readLine();	
 	}
 
     public void readListItem(List<item> listItem) throws FileNotFoundException, IOException{
@@ -41,11 +48,11 @@ public class TextInstanceReader{
 				listItem.add( new item(currObject));	
 				//hashItem.put(Integer.parseInt(parts[0]), new item(currObject)  );
 			}	
+
 			listItem.get( listItem.size()-1 ).addInstance(parts,dim);	
 			//hashItem.get(currObject).addInstance(parts,dim);
 			line = this.readLine();
 		}	
-		
 	}
 
 	private void initialize() throws IOException {
@@ -53,7 +60,6 @@ public class TextInstanceReader{
 	}
 
 	public void close() throws IOException {
-		bw.flush();
 		br.close();
 	}
 
