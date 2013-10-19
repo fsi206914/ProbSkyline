@@ -9,14 +9,15 @@ import java.io.Serializable;
 
 public class PartitionInfo implements Serializable{
 
+	private static final long serialVersionUID = 44L;
 	private int splitNo;
 	private int dim;	
 	
 	/*
 	 * Store every object's min extreme point 
 	 */
-	HashMap<Integer, instance.point> min;
-	HashMap<Integer, instance.point> max;
+	public HashMap<Integer, instance.point> min;
+	public HashMap<Integer, instance.point> max;
 
 	public PartitionInfo(int splitNo, int dim){
 		this.splitNo = splitNo;

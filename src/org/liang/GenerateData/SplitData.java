@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 public class SplitData{
 
 	public static int objectNum;
-    public static int dim;
+	public static int dim;
 	
 	public static int splitNum = 0;
 	public static ArrayList< PartitionInfo > outputLists;
@@ -68,10 +68,15 @@ public class SplitData{
 		int min_area = min.partition(split_Value,splitNum);	
 		int max_area = max.partition(split_Value,splitNum);	
 
-		//HashMap<Integer, instance.point> Adding =  outputLists.get(min_area).get(0);
-		//Adding.put(a_item.objectID,  min);
-		//Adding =  outputLists.get(max_area).get(1);
-		//Adding.put(a_item.objectID,  max);
+		PartitionInfo aPartInfo = null;
+
+		aPartInfo = outputLists.get(min_area);
+		if(aPartInfo != null)
+			aPartInfo.addMin(a_item.objectID,min);
+
+		aPartInfo = outputLists.get(max_area);
+		if(aPartInfo != null)
+			aPartInfo.addMax(a_item.objectID,max);
 
 		//if(logEnable){
 			//log.info("Adding size = {}", Adding.size() );
@@ -151,13 +156,6 @@ public class SplitData{
 
 		line = br.readLine();
 		}
-	}
-	catch (FileNotFoundException foef){
-		foef.printStackTrace();
-	}
-	catch (IOException ex){
-		ex.printStackTrace();
-	}
 
 	splitNum = split_index;
 	TIWs = new TextInstanceWriter[splitNum];
@@ -166,6 +164,16 @@ public class SplitData{
 
 		TIWs[i] = new TextInstanceWriter(Integer.toString(i));	
 	}
+
+	}
+	catch (FileNotFoundException foef){
+		foef.printStackTrace();
+	}
+	catch (IOException ex){
+		ex.printStackTrace();
+	}
+
+
 
 	partitionSubList(itemList,split_Value);
 
@@ -176,10 +184,10 @@ public class SplitData{
 		outputLists.add(aPartInfo);
 	}
 
-	//for(item i:itemList){
+	for(item i:itemList){
 		
-		//FindleftExtremePoint(i);
-	//}
+		FindleftExtremePoint(i);
+	}
 
 
 	try{

@@ -46,10 +46,10 @@ public class instanceGenerator{
 	
 		double halfEdge = edgeSize / 2;
 
-		instance.point pt= new instance.point(this.dim);
+		instance.point pt= new instance.point(dim);
 		ContinuousUniformGenerator instDimGen = new ContinuousUniformGenerator(-1*halfEdge, halfEdge, rng);
 
-		for(int i=0; i <this.dim; i++){
+		for(int i=0; i <dim; i++){
 
 			double a_value;
 			while(true){

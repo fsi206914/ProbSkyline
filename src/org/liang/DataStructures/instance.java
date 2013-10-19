@@ -5,6 +5,8 @@ import java.io.ObjectOutputStream;
 
 public class instance implements Serializable{
 
+	private static final long serialVersionUID = 42L;
+
 	public int objectID;
 	public int instanceID;
 	public double prob;
@@ -91,6 +93,8 @@ public class instance implements Serializable{
 	}
 
     public static class point implements Comparable<point>,Serializable {
+
+		private static final long serialVersionUID = 43L;
 
 		public double[] __coordinates;
 		public int dimCount;
