@@ -21,8 +21,11 @@ import java.util.Properties;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 
 public class SplitData{
 
@@ -34,16 +37,30 @@ public class SplitData{
 
 	public static double[] split_Value;
 
-	public static final Logger log = LoggerFactory.getLogger(SplitData.class);
+//	public static final Logger log = LoggerFactory.getLogger(SplitData.class);
+	private static org.apache.log4j.Logger log = Logger.getRootLogger();
+	
 	public static final int MaxSplitNum = 10;
 	public static final boolean logEnable = true;
 	public static TextInstanceWriter[] TIWs;
 
 	public SplitData(){
 
-		System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "DEBUG");
+//		System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "DEBUG");
 	}
 
+	public static void initializeLogger(String serverId)
+	{
+		FileAppender fa = new FileAppender();
+		fa.setName("FileLogger");
+		fa.setFile(serverId + ".log");
+		fa.setLayout(new PatternLayout("%m%n"));
+		fa.setThreshold(Level.INFO);
+		fa.setAppend(true);
+		fa.activateOptions();
+		log.addAppender(fa);
+	}
+	
 
 	public static void FindleftExtremePoint(item a_item){
 		int instanceNum = a_item.instances.size();
@@ -109,6 +126,7 @@ public class SplitData{
 
 	public static void main(String args[]){
 
+	initializeLogger("1");
 	Properties prop = new Properties();
 	ArrayList<item> itemList= new ArrayList<item>();
 
@@ -127,7 +145,7 @@ public class SplitData{
 	SplitData.objectNum = objectNum;
 
 	if(logEnable){
-		log.info("dim = {}, objectNum = {} ", dim, objectNum );
+		log.info("dim = "+ dim );
 	}
 
     try {

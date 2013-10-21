@@ -1,4 +1,4 @@
-JARS = .:../lib/uncommons-maths-1.2.3.jar:../lib/slf4j-api-1.7.5.jar:../lib/slf4j-simple-1.7.5.jar:../lib/commons-io-2.4.jar
+JARS = .:../lib/uncommons-maths-1.2.3.jar:../lib/slf4j-api-1.7.5.jar:../lib/slf4j-simple-1.7.5.jar:../lib/commons-io-2.4.jar:../lib/log4j-1.2.17.jar
 
 JFLAGS = -d ../bin/ -Xlint -cp $(JARS) 
 JC = javac
