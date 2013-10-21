@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class item{
 
 	public int objectID;
@@ -14,7 +16,9 @@ public class item{
 	public partialInfo PI;
 	public boolean IfSkyline = true;
 	public double objSkyProb;
-	
+	private static org.apache.log4j.Logger log = Logger.getRootLogger();
+		
+		
 	public item (int objectID){
 		this.objectID = objectID;
 		instances = new ArrayList<instance>();
@@ -50,6 +54,7 @@ public class item{
 	}
 
 	public void setMin(instance.point a_min){
+//		log.info("test log 4j - - - " );
 		this.min = a_min;
 	}
 			

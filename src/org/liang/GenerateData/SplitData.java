@@ -54,9 +54,9 @@ public class SplitData{
 		FileAppender fa = new FileAppender();
 		fa.setName("FileLogger");
 		fa.setFile(serverId + ".log");
-		fa.setLayout(new PatternLayout("%m%n"));
+		fa.setLayout(new PatternLayout("%d{ABSOLUTE}  %-5p [%C{1}]: %m%n"));
 		fa.setThreshold(Level.INFO);
-		fa.setAppend(true);
+//		fa.setAppend(true);
 		fa.activateOptions();
 		log.addAppender(fa);
 	}
