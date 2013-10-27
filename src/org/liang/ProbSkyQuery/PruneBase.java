@@ -32,9 +32,11 @@ public abstract class PruneBase{
 	public String testArea;
 
 	public List<item> listItem;
-	public List<item> afterPrune1List;
 	public ArrayList<PartitionInfo> outputLists;
 	public HashMap<Integer, Boolean> ItemSkyBool;
+	
+	//----------------Key is objectID, value is its index in listItem-----------------
+	public HashMap<Integer, Integer> corrIndex;
 
 	public static double[] split_Value;
 	public static int MaxSplitNum = 10;
@@ -68,9 +70,12 @@ public abstract class PruneBase{
 	    		ex.printStackTrace();
 		}
 
-		this.maxObjectNum = Integer.parseInt(prop.getProperty("ObjectNum"));
+		this.maxObjectNum = Integer.parseInt(prop.getProperty("objectNum"));
 		this.dim = Integer.parseInt(prop.getProperty("dim"));
 		this.testArea = prop.getProperty("testArea");
+		
+		corrIndex = new HashMap<Integer, Integer>();
+		listItem = new ArrayList<item>(this.maxObjectNum);
 	}
 
 	public void setItemSkyBool(){
@@ -79,11 +84,13 @@ public abstract class PruneBase{
 		for(int i=0; i<listItem.size();i++){
 			int objectID = listItem.get(i).objectID;
 			ItemSkyBool.put(objectID,true);
+			corrIndex.put(objectID, i);
 		}
 	}
 
 	public PruneBase(){
-		init();
+	//	init();
+	//	setItemSkyBool();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -97,10 +104,10 @@ public abstract class PruneBase{
 			FileInputStream input = new FileInputStream(new File("MAX_MIN"));
 			ObjectInputStream in = new ObjectInputStream(input);
 
-			if(in.readObject() instanceof ArrayList){
+//			if(in.readObject() instanceof ArrayList){
 				
 				outputLists = ( ArrayList< PartitionInfo >)in.readObject();
-			}
+//			}
 			in.close();
 			input.close(); 
 		}

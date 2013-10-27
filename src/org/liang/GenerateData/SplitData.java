@@ -213,6 +213,7 @@ public class SplitData{
 		FileOutputStream fileOut = new FileOutputStream( "MAX_MIN" );
 		ObjectOutputStream outStream = new ObjectOutputStream(fileOut);
 		outStream.writeObject(outputLists);
+		outStream.flush();
 		outStream.close();
 		fileOut.close();
 

@@ -17,6 +17,7 @@ CLASSES = \
 		org/liang/DataStructures/PartitionInfo.java\
 		org/liang/ProbSkyQuery/PruneBase.java\
 		org/liang/ProbSkyQuery/Prune1And2.java\
+		org/liang/ProbSkyQuery/PruneMain.java\
 		org/liang/DataStructures/item.java
 
 default: classes
