@@ -1,6 +1,6 @@
 JARS = .:../lib/uncommons-maths-1.2.3.jar:../lib/slf4j-api-1.7.5.jar:../lib/slf4j-simple-1.7.5.jar:../lib/commons-io-2.4.jar:../lib/log4j-1.2.17.jar
 
-JFLAGS = -d ../bin/ -Xlint -cp $(JARS) 
+JFLAGS = -d ../bin/ -cp $(JARS) 
 JC = javac
 
 .SUFFIXES : .java .class
@@ -18,6 +18,8 @@ CLASSES = \
 		org/liang/ProbSkyQuery/PruneBase.java\
 		org/liang/ProbSkyQuery/Prune1And2.java\
 		org/liang/ProbSkyQuery/PruneMain.java\
+		org/liang/KDTree/KDTree.java\
+		org/liang/KDTree/KDTreeMain.java\
 		org/liang/DataStructures/item.java
 
 default: classes
