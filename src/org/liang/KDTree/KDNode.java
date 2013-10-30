@@ -1,7 +1,7 @@
 package org.liang.KDTree;
 
 
-public class KDNode implements Comparable<KDNode> {
+public class KDNode<T> implements Comparable<KDNode<T>> {
 
     public int k;
     public int depth;
@@ -9,6 +9,7 @@ public class KDNode implements Comparable<KDNode> {
     public KDNode lesser = null;
     public KDNode greater = null;
     public boolean RectOrLeaf;
+	public T a_T;
 
     public KDNode() {
     }
@@ -19,9 +20,10 @@ public class KDNode implements Comparable<KDNode> {
         this.depth = depth;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+	public void setT(T a_T){
+		
+		this.a_T = a_T;
+	}
 
     public void setDepth(int a_depth) {
 
@@ -46,9 +48,8 @@ public class KDNode implements Comparable<KDNode> {
     }
 
     @Override
-    public int compareTo(KDNode o) {
+    public int compareTo(KDNode<T> o) {
         return 1;
     }
-
 
 }

@@ -1,32 +1,32 @@
 // Hyper-Rectangle class supporting KDTree class
 
 package org.liang.KDTree;
+import org.liang.DataStructures.instance;
 
-class KDLeaf< Coord extends Comparable<? super Coord>> extends KDNode {
+class KDLeaf< T> extends KDNode<T> {
 
-    public GenericPoint point;
-    private final Class nameDouble = Double.class;
-    private final Class nameInt = Integer.class;
+    public KDPoint point;
+    private Class instClass;
     public int dim;
+	T inst;
 
-    public KDLeaf(Class T, int ndims) {
+    public KDLeaf(Class cName, int ndims, T a_inst) {
         super();
-        point = new GenericPoint(T, ndims);
+        point = new KDPoint(ndims);
         dim = ndims;
-        if(  (T!= nameDouble) &&  (T!=nameInt) )
-            System.out.println("The type can not be supported");
+		instClass = cName;
+		inst = a_inst;
     }
 
 
-    public void setValue(Coord[] value) {
+    public void setValue(double[] value) {
 
         for (int i=0; i<value.length; ++i) {
             point.setCoord(i, value[i]);
         }
     }
 
-    public void setPoint(GenericPoint a_point) {
-
+    public void setPoint(KDPoint a_point) {
         point = a_point;
     }
 
@@ -35,18 +35,16 @@ class KDLeaf< Coord extends Comparable<? super Coord>> extends KDNode {
     }
 
 
-
     public boolean equal(Object obj) {
         if (obj == null) return false;
-        if (!(obj instanceof GenericPoint)) {
+        if (!(obj instanceof KDPoint)) {
             System.out.println("The comparison objects are confused");
             return false;
         }
-        GenericPoint a_point = (GenericPoint) obj;
+        KDPoint a_point = (KDPoint) obj;
         int ret = 0;
 
         for(int i=0; i<dim; i++){
-
 
             point.setCurrDimComp(i);
             int local = point.compareTo(a_point);
@@ -60,8 +58,7 @@ class KDLeaf< Coord extends Comparable<? super Coord>> extends KDNode {
 
     public static void main(String args[]){
 
-    KDLeaf a = new KDLeaf(Double.class, 5);
-
+		//KDLeaf a = new KDLeaf(Double.class, 5);
     }
 }
 
