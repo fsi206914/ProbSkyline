@@ -36,6 +36,13 @@ public class KDPoint implements  Comparable< KDPoint>
 	}
 
 
+	public KDPoint( double x, double y, double z) {
+		__coordinates = new double[3];
+		setCoord(0, x);
+		setCoord(1, y);
+		setCoord(2, z);
+	}
+
 	/**
 	 * Sets the value of the coordinate for the specified dimension.
 	 *
@@ -122,5 +129,4 @@ public class KDPoint implements  Comparable< KDPoint>
 		b.setCoord(0, 1.2);a.setCoord(1, 2.2);a.setCoord(2, 3.2);
 		System.out.println(a.compareTo(b));
 	}
-
 }

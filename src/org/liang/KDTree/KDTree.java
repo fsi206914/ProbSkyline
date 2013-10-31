@@ -158,6 +158,7 @@ public class KDTree < T >  {
     }
 
 
+	@SuppressWarnings("unchecked")
 	public void rangeQuery(KDNode node, KDArea area, List<KDPoint> a_list){
 		if(node.getRL()){
 			if( node.lieIn(area) ){
@@ -175,7 +176,6 @@ public class KDTree < T >  {
 			}
 		}
 	}
-
 
     /**
      * Does the tree contain a point in a leaf.
@@ -270,7 +270,6 @@ public class KDTree < T >  {
         return TreePrinter.getString(this);
     }
 
-
     public static List generatePoints() {
         List<KDPoint> list = new ArrayList<KDPoint>();
         Random random = new Random();
@@ -278,29 +277,42 @@ public class KDTree < T >  {
         for(int i = 0; i < 20; ++i) {
           double x = random.nextDouble();
           double y = random.nextDouble();
-          list.add(new KDPoint(x, y));
+          double z = random.nextDouble();
+		 
+          list.add(new KDPoint(x, y, z));
         }
         return list;
     }
 
+	@SuppressWarnings("unchecked")
     public static void main (String args[]){
 
 
 //    List<KDPoint> list = new ArrayList<KDPoint>();
 //    list.add(a);list.add(b);list.add(c);list.add(d);
 
-	@SuppressWarnings("unchecked")
     List<KDPoint> list = generatePoints();
 
-    KDTree myTree = new KDTree<Double>(Double.class, list,2);
-
-    //KDPoint<instance> GP = new KDPoint(5, 6);
-
-    //boolean check = myTree.contains(GP);
-
-    //if(check)
-
+    KDTree myTree = new KDTree<Double>(Double.class, list,3);
     System.out.println(myTree.toString());
+
+
+	/**
+	 * Test range query algorithm.
+	 *
+	 */ 
+	List<KDPoint> rangeList = new ArrayList<KDPoint>();
+	KDArea KDA = new KDArea(3);
+	KDPoint min = new KDPoint(0.2, 0.2, 0.01);
+	KDPoint max = new KDPoint(0.7, 0.7, 0.9);
+	KDA.setMinMax(min, max);
+
+	myTree.rangeQuery(myTree.root, KDA, rangeList);
+
+	for(KDPoint i:rangeList){
+		
+		System.out.println(i.toString());	
+	}
 
     }
 }
