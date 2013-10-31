@@ -1,21 +1,18 @@
 // Hyper-Rectangle class supporting KDTree class
 
 package org.liang.KDTree;
-import org.liang.DataStructures.instance;
 
-class KDLeaf< T> extends KDNode<T> {
+class KDLeaf<T> extends KDNode<T> {
 
     public KDPoint point;
     private Class instClass;
     public int dim;
-	T inst;
 
-    public KDLeaf(Class cName, int ndims, T a_inst) {
+    public KDLeaf(Class cName, int ndims) {
         super();
         point = new KDPoint(ndims);
         dim = ndims;
 		instClass = cName;
-		inst = a_inst;
     }
 
 
@@ -34,6 +31,17 @@ class KDLeaf< T> extends KDNode<T> {
         return "A leaf: " + point.toString() + "\n";
     }
 
+	public boolean lieIn(KDArea area){
+		
+		for(int i=0; i<dim; i++){
+			
+			if( point.__coordinates[i] >= area.min.__coordinates[i] && point.__coordinates[i] <= area.max.__coordinates[i]  )	
+				return continue;
+			else
+				return false;
+		}	
+		return true;
+	}
 
     public boolean equal(Object obj) {
         if (obj == null) return false;

@@ -38,8 +38,8 @@ class KDRect<T> extends KDNode {
     public void infiniteHRectDouble() {
 
         for (int i=0; i<dim; ++i) {
-            min.setCoord(i, Double.NEGATIVE_INFINITY);
-            max.setCoord(i, Double.POSITIVE_INFINITY);
+            min.setCoord(i, 0.0);
+            max.setCoord(i, 1.0);
         }
     }
 
@@ -81,9 +81,19 @@ class KDRect<T> extends KDNode {
 
 		if(midValue > retValue ) return 1;
 		else return -1;
-
     }
 
+	public boolean lieIn(KDArea area){
+		
+		for(int i=0; i<dim; i++){
+			
+			if(area.min.__coordinates[i] > this.max.__coordinates[i] || area.max.__coordinates[i] < this.min.__coordinates[i] )
+				return false;
+			else
+				continue;
+		}	
+		return true;
+	}
 
     public String toString() {
         return "A rectangle: " + min.toString() + "   " + max.toString() + "\n";

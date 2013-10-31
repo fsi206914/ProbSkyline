@@ -21,13 +21,14 @@ import org.liang.DataStructures.*;
  * http://en.wikipedia.org/wiki/K-d_tree
  *
  */
+@SuppressWarnings("rawtypes")
 public class KDTree < T >  {
 
     private int k;
     public KDNode root = null;
-    private final ALLCOMPARATOR A_COMPARATOR;
+    private ALLCOMPARATOR A_COMPARATOR;
 
-    private final Class name;
+    private Class<?> name;
     final class ALLCOMPARATOR implements Comparator<KDPoint>{
 
         private int DimToSort;
@@ -45,24 +46,23 @@ public class KDTree < T >  {
         public int compare(KDPoint o1, KDPoint o2) {
             o1.setCurrDimComp(DimToSort);
             return o1.compareTo(o2);
-
         }
     }
 
     /**
      * Default constructor.
      */
-    public KDTree() {
-        this.k = 2;
-        this.A_COMPARATOR = new ALLCOMPARATOR(k);
-    }
+	public KDTree() {
+		this.k = 2;
+		this.A_COMPARATOR = new ALLCOMPARATOR(2);
+	}
 
     /**
      * More efficient constructor.
      *
      * @param list of XYZPoints.
      */
-    public KDTree(Class T, List<KDPoint> list, int a_dim) {
+    public KDTree(Class<?> T, List<KDPoint> list, int a_dim) {
         this.k = a_dim;
         this.A_COMPARATOR = new ALLCOMPARATOR(this.k);
         name = T;
@@ -155,8 +155,32 @@ public class KDTree < T >  {
         printANode(node);
         Traverse(node.lesser);
         Traverse(node.greater);
-
     }
+
+
+	public void rangeQuery(KDNode node, KDArea area ){
+		if(node.getRL()){
+			if( (KDLeaf)node.lieIn(area) ){
+			}
+			
+			return;	
+		}
+		else{
+			if( !node.lesser.getRL() ){
+				if(! ((KDRect)node.lesser).lieIn(area) )
+					break;
+				rangeQuery(node.lesser,area);
+			}
+
+			if( !node.greater.getRL() ){
+				if(! ((KDRect)node.greater).lieIn(area) )
+					break;
+				rangeQuery(node.greater,area);
+			}
+			
+		}
+	}
+
 
     /**
      * Does the tree contain a point in a leaf.
@@ -168,14 +192,12 @@ public class KDTree < T >  {
         if (a_point==null) return false;
 
         KDNode node = this.getNode(a_point);
-
         return (node!=null);
     }
 
 
     public KDNode getNode( KDPoint a_point ) {
         if ( this.root==null || a_point==null) return null;
-
         KDNode node = this.root;
 
         while (true) {
@@ -206,12 +228,12 @@ public class KDTree < T >  {
     }
     protected static class TreePrinter {
 
-        public static < T extends Comparable<? super T>> String getString(KDTree<T> tree) {
+        public static < T > String getString(KDTree<T> tree) {
             if (tree.root == null) return "Tree has no nodes.";
             return getString(tree.root, "", true);
         }
 
-        private static < T extends Comparable<? super T>> String getString(KDNode node, String prefix, boolean isTail) {
+        private static < T > String getString(KDNode node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
             if (node.parent!=null) {
@@ -259,11 +281,10 @@ public class KDTree < T >  {
         Random random = new Random();
 
         for(int i = 0; i < 20; ++i) {
-          int x = random.nextInt(100);
-          int y = random.nextInt(100);
-          list.add(new KDPoint<Integer>(Integer.class, new Integer(x), new Integer(y)));
+          double x = random.nextDouble();
+          double y = random.nextDouble();
+          list.add(new KDPoint(x, y));
         }
-        list.add(new KDPoint<Integer>(Integer.class, 5, 6));
         return list;
     }
 
@@ -273,19 +294,18 @@ public class KDTree < T >  {
 //    List<KDPoint> list = new ArrayList<KDPoint>();
 //    list.add(a);list.add(b);list.add(c);list.add(d);
 
+	@SuppressWarnings("unchecked")
     List<KDPoint> list = generatePoints();
 
-    KDTree myTree = new KDTree<Integer>(Integer.class, list,2);
-//    myTree.Traverse(myTree.root);
+    KDTree myTree = new KDTree<Double>(Double.class, list,2);
 
-    KDPoint<instance> GP = new KDPoint(5, 6);
+    //KDPoint<instance> GP = new KDPoint(5, 6);
 
-    boolean check = myTree.contains(GP);
+    //boolean check = myTree.contains(GP);
 
-    if(check)
+    //if(check)
+
     System.out.println(myTree.toString());
 
-
     }
-
 }

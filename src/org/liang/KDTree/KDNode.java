@@ -8,6 +8,10 @@ public class KDNode<T> implements Comparable<KDNode<T>> {
     public KDNode parent = null;
     public KDNode lesser = null;
     public KDNode greater = null;
+    
+    /*
+     * if RectOrLeaf == true, it means taht the node is leaf.
+     */
     public boolean RectOrLeaf;
 	public T a_T;
 

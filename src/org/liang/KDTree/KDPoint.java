@@ -30,6 +30,7 @@ public class KDPoint implements  Comparable< KDPoint>
 	 * @param y The coordinate value of the second dimension.
 	 */
 	public KDPoint( double x, double y) {
+		__coordinates = new double[2];
 		setCoord(0, x);
 		setCoord(1, y);
 	}
