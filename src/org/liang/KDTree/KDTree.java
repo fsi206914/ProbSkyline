@@ -158,26 +158,21 @@ public class KDTree < T >  {
     }
 
 
-	public void rangeQuery(KDNode node, KDArea area ){
+	public void rangeQuery(KDNode node, KDArea area, List<KDPoint> a_list){
 		if(node.getRL()){
-			if( (KDLeaf)node.lieIn(area) ){
+			if( node.lieIn(area) ){
+				a_list.add( ((KDLeaf)node).point );
 			}
-			
 			return;	
 		}
 		else{
-			if( !node.lesser.getRL() ){
-				if(! ((KDRect)node.lesser).lieIn(area) )
-					break;
-				rangeQuery(node.lesser,area);
+			if( node.lesser.lieIn(area) ){
+				rangeQuery(node.lesser, area, a_list);
 			}
 
-			if( !node.greater.getRL() ){
-				if(! ((KDRect)node.greater).lieIn(area) )
-					break;
-				rangeQuery(node.greater,area);
+			if( node.greater.lieIn(area) ){
+				rangeQuery(node.greater, area, a_list);
 			}
-			
 		}
 	}
 

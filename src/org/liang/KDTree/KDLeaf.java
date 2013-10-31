@@ -15,7 +15,6 @@ class KDLeaf<T> extends KDNode<T> {
 		instClass = cName;
     }
 
-
     public void setValue(double[] value) {
 
         for (int i=0; i<value.length; ++i) {
@@ -36,7 +35,7 @@ class KDLeaf<T> extends KDNode<T> {
 		for(int i=0; i<dim; i++){
 			
 			if( point.__coordinates[i] >= area.min.__coordinates[i] && point.__coordinates[i] <= area.max.__coordinates[i]  )	
-				return continue;
+				continue;
 			else
 				return false;
 		}	

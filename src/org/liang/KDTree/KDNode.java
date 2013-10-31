@@ -1,7 +1,7 @@
 package org.liang.KDTree;
 
 
-public class KDNode<T> implements Comparable<KDNode<T>> {
+public abstract class KDNode<T> implements Comparable<KDNode<T>> {
 
     public int k;
     public int depth;
@@ -39,6 +39,8 @@ public class KDNode<T> implements Comparable<KDNode<T>> {
         this.RectOrLeaf = RectOrLeaf;
     }
 
+	abstract boolean lieIn(KDArea area);
+
     public boolean getRL() {
 
         return RectOrLeaf;
@@ -55,5 +57,4 @@ public class KDNode<T> implements Comparable<KDNode<T>> {
     public int compareTo(KDNode<T> o) {
         return 1;
     }
-
 }
