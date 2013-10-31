@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Random;
 
+import org.liang.DataStructures.*;
+
 /**
  * A k-d tree (short for k-dimensional tree) is a space-partitioning data structure for organizing
  * points in a k-dimensional space. k-d trees are a useful data structure for several applications,
@@ -19,14 +21,14 @@ import java.util.Random;
  * http://en.wikipedia.org/wiki/K-d_tree
  *
  */
-public class KDTree < T extends Comparable<? super T>>  {
+public class KDTree < T >  {
 
     private int k;
     public KDNode root = null;
     private final ALLCOMPARATOR A_COMPARATOR;
 
     private final Class name;
-    final class ALLCOMPARATOR implements Comparator<GenericPoint >{
+    final class ALLCOMPARATOR implements Comparator<KDPoint>{
 
         private int DimToSort;
         private final boolean ascending;
@@ -40,13 +42,11 @@ public class KDTree < T extends Comparable<? super T>>  {
             this.DimToSort = a_DimToSort;
         }
 
-
-        public int compare(GenericPoint o1, GenericPoint o2) {
+        public int compare(KDPoint o1, KDPoint o2) {
             o1.setCurrDimComp(DimToSort);
             return o1.compareTo(o2);
 
         }
-
     }
 
     /**
@@ -55,7 +55,6 @@ public class KDTree < T extends Comparable<? super T>>  {
     public KDTree() {
         this.k = 2;
         this.A_COMPARATOR = new ALLCOMPARATOR(k);
-        name = Double.class;
     }
 
     /**
@@ -63,14 +62,14 @@ public class KDTree < T extends Comparable<? super T>>  {
      *
      * @param list of XYZPoints.
      */
-    public KDTree(Class T, List<GenericPoint> list, int a_dim) {
+    public KDTree(Class T, List<KDPoint> list, int a_dim) {
         this.k = a_dim;
         this.A_COMPARATOR = new ALLCOMPARATOR(this.k);
         name = T;
         if(list.size() >1){
 
-            root = new KDRect(name, k);
-            ((KDRect)root).infiniteHRect(this.name);
+            root = new KDRect(T, k);
+            //((KDRect)root).infiniteHRect(this.name);
         }
 
         createNode(list, k, 0, root);
@@ -84,7 +83,7 @@ public class KDTree < T extends Comparable<? super T>>  {
      * @param depth depth of the node.
      * @return node created.
      */
-    public KDNode createNode(List<GenericPoint> list, int k, int depth, KDNode currRoot) {
+    public KDNode createNode(List<KDPoint> list, int k, int depth, KDNode currRoot) {
         if (list==null || list.size()==0) return null;
 
         if(list.size()==1){
@@ -101,14 +100,14 @@ public class KDTree < T extends Comparable<? super T>>  {
         int mediaIndex = list.size()/2;
         KDNode node = currRoot;
 
-        GenericPoint median_point = list.get(mediaIndex-1);
-        T mid_value = (T) median_point.getCoord(axis);
+        KDPoint median_point = list.get(mediaIndex-1);
+        double mid_value =  median_point.getCoord(axis);
 
         ((KDRect) node).setHyperPlane(axis,mid_value);
 
         if (list.size()>1) {
 
-            List<GenericPoint> less = list.subList(0, mediaIndex);
+            List<KDPoint> less = list.subList(0, mediaIndex);
             if (less.size()>1 ) {
                     KDNode leftLeaf = new KDRect(name, k);
                     leftLeaf.setDepth(depth+1);
@@ -117,13 +116,13 @@ public class KDTree < T extends Comparable<? super T>>  {
                     ((KDRect)leftLeaf).setLeftValue((KDRect)node, axis, mid_value);
                     node.lesser = createNode(less, k, depth+1, leftLeaf);
                     node.lesser.parent = node;
-                }
+			}
             else{
                     node.lesser = createNode(less, k, depth+1, currRoot);
                     node.lesser.parent = node;
 
                 }
-            List<GenericPoint> more = list.subList(mediaIndex, list.size());
+            List<KDPoint> more = list.subList(mediaIndex, list.size());
 
                 if (more.size()>1) {
                     KDNode rightLeaft = new KDRect(name, k);
@@ -165,7 +164,7 @@ public class KDTree < T extends Comparable<? super T>>  {
      * @param value T to locate in the tree.
      * @return True if tree contains value.
      */
-    public boolean contains( GenericPoint a_point) {
+    public boolean contains( KDPoint a_point) {
         if (a_point==null) return false;
 
         KDNode node = this.getNode(a_point);
@@ -174,7 +173,7 @@ public class KDTree < T extends Comparable<? super T>>  {
     }
 
 
-    public KDNode getNode( GenericPoint a_point ) {
+    public KDNode getNode( KDPoint a_point ) {
         if ( this.root==null || a_point==null) return null;
 
         KDNode node = this.root;
@@ -256,30 +255,30 @@ public class KDTree < T extends Comparable<? super T>>  {
 
 
     public static List generatePoints() {
-        List<GenericPoint> list = new ArrayList<GenericPoint>();
+        List<KDPoint> list = new ArrayList<KDPoint>();
         Random random = new Random();
 
         for(int i = 0; i < 20; ++i) {
           int x = random.nextInt(100);
           int y = random.nextInt(100);
-          list.add(new GenericPoint<Integer>(Integer.class, new Integer(x), new Integer(y)));
+          list.add(new KDPoint<Integer>(Integer.class, new Integer(x), new Integer(y)));
         }
-        list.add(new GenericPoint<Integer>(Integer.class, 5, 6));
+        list.add(new KDPoint<Integer>(Integer.class, 5, 6));
         return list;
     }
 
     public static void main (String args[]){
 
 
-//    List<GenericPoint> list = new ArrayList<GenericPoint>();
+//    List<KDPoint> list = new ArrayList<KDPoint>();
 //    list.add(a);list.add(b);list.add(c);list.add(d);
 
-    List<GenericPoint> list = generatePoints();
+    List<KDPoint> list = generatePoints();
 
     KDTree myTree = new KDTree<Integer>(Integer.class, list,2);
 //    myTree.Traverse(myTree.root);
 
-    GenericPoint<Integer> GP = new GenericPoint(Integer.class, 5, 6);
+    KDPoint<instance> GP = new KDPoint(5, 6);
 
     boolean check = myTree.contains(GP);
 

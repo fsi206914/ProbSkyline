@@ -16,7 +16,6 @@ class KDRect<T> extends KDNode {
     public hyperplane currHP;
 
     public final class hyperplane{
-
         int planeDim;
         double value;
 
@@ -25,9 +24,7 @@ class KDRect<T> extends KDNode {
             planeDim = a_planeDim;
             value = a_value;
         }
-
     }
-
 
     public KDRect(Class T, int ndims) {
         super();
