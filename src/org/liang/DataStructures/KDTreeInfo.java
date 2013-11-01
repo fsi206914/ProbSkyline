@@ -11,10 +11,11 @@ public class KDTreeInfo{
 
 	public HashMap<KDNode, Info> maintain;	
 	public ArrayList<Integer> objectIDs;
+	public HashMap<KDPoint, instance> KDMapInstance;
 
 	public final class Info{
 		
-		public HashMap<Integer, Double> theta;	
+		public HashMap<Integer, Doluble> theta;	
 		public double pi;
 		public int X;
 		public KDArea a_area;
@@ -30,8 +31,9 @@ public class KDTreeInfo{
 		}
 	}
 
-	public KDTreeInfo(){
+	public KDTreeInfo(HashMap<KDPoint, instance> KDMapInstance ){
 		maintain = new HashMap<KDNode, Info>();	
+		this.KDMapInstance = KDMapInstance;
 	}
 
 	public void setObjectBool(HashMap<Integer, Boolean> ItemSkyBool ){
@@ -59,5 +61,74 @@ public class KDTreeInfo{
 		a_info.setArea(a_area);
 		maintain.put(root, a_info);
 	}
+
+	public void add(KDNode node, KDArea a_area, List<KDPoint> a_list){
+
+		if(node.parent == null) System.out.println("Something Wrong in node parent in KDNodeInfo");
+		
+		KDNode parent = node.parent; 
+		Info parentInfo = maintain.get(parent);
+
+		/*
+		 * iterator parent hashmap, copying previous (object, Pr) to the child's. 
+		 */
+		HashMap<Integer, Double> theta = new HashMap<Integer, Double>();
+		Iterator it = parent.theta.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry)it.next();	
+
+			theta.put(pairs.getKey(), pairs.getValue());
+		}
+		
+		double pi = 1;
+		double x = 0;
+		
+		/*
+		 * adding curret range query result to parent hashmap, to get a new HashMap.
+		 */
+		for(KDPoint kdp: a_list){
+			instance aInst = KDMapInstance.get(kdp);	
+			int objectID = aInst.objectID;
+			double prob = aInst.prob + theta.get(objectID);
+			theta.put(objectID, prob);
+		}
+
+		Info a_info = new Info(theta, pi, x);
+		a_info.setArea(a_area);
+		maintain.put(root, a_info);
+
+		/*
+		 * if the node is the leaf, we can output the probskyline now.
+		 */
+		if(node.getRL())
+			CompFinalSkyProb(theta,node);
+	}
+
+	public void CompFinalSkyProb(HashMap<Integer, Double> theta, KDNode node){
+		
+		KDpoint instPoint = (KDLeaf) node.point;
+		instance aInst = KDMapInstance.get(instPoint);
+		int omitObjID = aInst.objectID;
+
+		double ret = 1.0;
+
+		Iterator it = parent.theta.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry)it.next();	
+			if(pairs.getKey() == omitObjID) continue;
+			
+			double objProb = pairs.getValue();
+			if(objProb >= 1.0){
+				aInst.instSkyProb = 0.0;
+				return ;
+			}
+			else{
+				ret *= (1-objProb);	
+			}
+		}
+		aInst.instSkyProb = ret;
+		return ;
+	}
+
 
 }

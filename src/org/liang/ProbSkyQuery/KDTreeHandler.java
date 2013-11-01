@@ -12,6 +12,8 @@ public class KDTreeHandler{
 	public KDTree kdTree;
 	public KDTreeInfo KDInfo;
 
+	public HashMap<KDPoint, instance> KDMapInstance;
+
 	/**
 	 * The left Corner point of range query.
 	 */
@@ -20,9 +22,12 @@ public class KDTreeHandler{
 
 	void init(List<instance> aList, int dim ){
 		this.dim = dim;
+		KDMapInstance = new HashMap<KDPoint, instance>();
 		KDPList = new ArrayList<KDPoint> ();
 		for(instance i: aList){
-			KDPList.add( util.InstanceToKDPoint(i) );	
+			KDPoint aKDPoint =  util.InstanceToKDPoint(i); 
+			KDPList.add(aKDPoint);	
+			KDMapInstance.put(aKDPoint, i);
 		}
 		createTree();
 		min = new KDPoint(dim);
@@ -54,15 +59,24 @@ public class KDTreeHandler{
 		else{
 			KDArea parentArea = kdInfo.getArea(node.parent);
 
-			if(!node.getRL()){
-				List<KDPoint> a_list;
-				KDPoint max = (KDRect)node.min;
+			/*
+			 * find the new area for range query. a_list is the instance list found in the range.
+			 */
+			KDArea a_area = node.cut(parentArea);
+			List<KDPoint> a_list;
+			kdTree.rangeQuery(kdTree.root, a_area, a_list);
 
-				KDArea a_area = node.cut(parentArea);
+			/*
+			 * old area stored for future search.
+			 */
+			KDPoint max;
+			if(!node.getRL() )
+				max = (KDRect)node.min;
+			else
+				max = (KDLeaf)node.point;
 
+			kdInfo.Add(node, new KDArea(min, max), a_list)
 
-			}
 		}
 	}
-
 }
