@@ -6,7 +6,7 @@ package org.liang.KDTree;
  * Rect is the intermediate level of KDTree. It includes various
  *
  */
-class KDRect<T> extends KDNode {
+public class KDRect<T> extends KDNode {
 
     public KDPoint min;
     public KDPoint max;

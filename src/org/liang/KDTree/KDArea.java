@@ -33,6 +33,7 @@ public class KDArea{
 		a_min.setCoord(i,parent.max.__coordinates[i]);		
 
 		KDArea ret = new KDArea(k, a_min, max);
+		return ret;
 	}
 	
 	public void setMin(KDPoint a_point){

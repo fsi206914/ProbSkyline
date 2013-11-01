@@ -1,16 +1,19 @@
 package org.liang.ProbSkyQuery;
 
 import org.liang.DataStructures.instance;
-import org.liang.KDTree.KDPoint;
+import org.liang.DataStructures.KDTreeInfo;
+
+import org.liang.KDTree.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@SuppressWarnings("rawtypes")
 public class KDTreeHandler{
 
 	public List<KDPoint> KDPList;
 	public KDTree kdTree;
-	public KDTreeInfo KDInfo;
+	public KDTreeInfo kdInfo;
 
 	public HashMap<KDPoint, instance> KDMapInstance;
 
@@ -36,12 +39,13 @@ public class KDTreeHandler{
 
 	void createTree(){
 		kdTree = new KDTree<Double>(Double.class, KDPList, dim);
-		kdInfo = new KDTreeInfo();
+		kdInfo = new KDTreeInfo(KDMapInstance);
 	}
 
 	void Traverse(){
 		preOrder(kdTree.root);	
 	}
+
 
 	void preOrder(KDNode node){
 		if(node == null) return;	
@@ -50,6 +54,7 @@ public class KDTreeHandler{
 		preOrder(node.greater);
 	}
 
+	@SuppressWarnings("unchecked")
 	void computeInfo(KDNode node){
 		
 		if(node.parent == null){
@@ -59,11 +64,14 @@ public class KDTreeHandler{
 		else{
 			KDArea parentArea = kdInfo.getArea(node.parent);
 
+			if(parentArea == null) System.out.println("Something Wrong happens here.");
 			/*
 			 * find the new area for range query. a_list is the instance list found in the range.
 			 */
-			KDArea a_area = node.cut(parentArea);
-			List<KDPoint> a_list;
+			KDArea currArea = kdInfo.getArea(node);
+			KDArea a_area = currArea.cut(parentArea);
+			List<KDPoint> a_list = new ArrayList<KDPoint>();
+
 			kdTree.rangeQuery(kdTree.root, a_area, a_list);
 
 			/*
@@ -71,11 +79,11 @@ public class KDTreeHandler{
 			 */
 			KDPoint max;
 			if(!node.getRL() )
-				max = (KDRect)node.min;
+				max = ((KDRect)node).min;
 			else
-				max = (KDLeaf)node.point;
+				max = ((KDLeaf)node).point;
 
-			kdInfo.Add(node, new KDArea(min, max), a_list)
+			kdInfo.add(node, new KDArea(dim, min, max), a_list);
 
 		}
 	}

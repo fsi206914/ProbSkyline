@@ -6,7 +6,7 @@ import org.liang.KDTree.KDPoint;
 public class util{
 	
 	public static KDPoint InstanceToKDPoint(instance a_inst ){
-		return 	pointToKDPoint(a_inst.a_point);
+		return 	PointToKDPoint(a_inst.a_point);
 	}	
 
 	public static KDPoint PointToKDPoint(instance.point point) {

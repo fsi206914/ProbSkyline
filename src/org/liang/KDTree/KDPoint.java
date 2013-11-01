@@ -143,7 +143,7 @@ public class KDPoint implements  Comparable< KDPoint>
 		assert(__coordinates.length == other.__coordinates.length);
 		for(int i=0; i<__coordinates.length; i++){
 			
-			if(__coordinates[i] == __other.__coordinates[i]) continue;	
+			if(__coordinates[i] == other.__coordinates[i]) continue;	
 			else return false;
 		}
 		return true;

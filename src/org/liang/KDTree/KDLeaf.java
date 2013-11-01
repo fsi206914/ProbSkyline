@@ -2,7 +2,7 @@
 
 package org.liang.KDTree;
 
-class KDLeaf<T> extends KDNode<T> {
+public class KDLeaf<T> extends KDNode<T> {
 
     public KDPoint point;
     private Class instClass;

@@ -1,4 +1,4 @@
-package org.liang.ProbSkyQuery;
+package org.liang.DataStructures;
 
 import org.liang.KDTree.*;
 import java.util.List;
@@ -15,18 +15,18 @@ public class KDTreeInfo{
 
 	public final class Info{
 		
-		public HashMap<Integer, Doluble> theta;	
+		public HashMap<Integer, Double> theta;	
 		public double pi;
-		public int X;
+		public int x;
 		public KDArea a_area;
 
-		public Info(HashMap<Integer, Double> theta, double pi, double x){
+		public Info(HashMap<Integer, Double> theta, double pi, int x){
 			this.theta = theta;	
 			this.pi = pi;
 			this.x = x;
 		}
 
-		public setArea(KDArea a_area){
+		public void setArea(KDArea a_area){
 			this.a_area = a_area;		
 		}
 	}
@@ -47,6 +47,15 @@ public class KDTreeInfo{
 		}
 	}
 
+	public KDArea getArea(KDNode node){
+		
+		Info info = maintain.get(node);	
+		if(info != null)
+			return info.a_area;
+
+		return null;
+	}
+
 	public void init(KDNode root, KDArea a_area){
 		HashMap<Integer, Double> theta = new HashMap<Integer, Double>();
 		for(int i=0; i<objectIDs.size(); i++){
@@ -55,7 +64,7 @@ public class KDTreeInfo{
 		}
 		
 		double pi = 1;
-		double x = 0;
+		int x = 0;
 		
 		Info a_info = new Info(theta, pi, x);
 		a_info.setArea(a_area);
@@ -73,15 +82,15 @@ public class KDTreeInfo{
 		 * iterator parent hashmap, copying previous (object, Pr) to the child's. 
 		 */
 		HashMap<Integer, Double> theta = new HashMap<Integer, Double>();
-		Iterator it = parent.theta.entrySet().iterator();
+		Iterator it = parentInfo.theta.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pairs = (Map.Entry)it.next();	
 
-			theta.put(pairs.getKey(), pairs.getValue());
+			theta.put((int)pairs.getKey(), (double)pairs.getValue());
 		}
 		
 		double pi = 1;
-		double x = 0;
+		int x = 0;
 		
 		/*
 		 * adding curret range query result to parent hashmap, to get a new HashMap.
@@ -95,7 +104,7 @@ public class KDTreeInfo{
 
 		Info a_info = new Info(theta, pi, x);
 		a_info.setArea(a_area);
-		maintain.put(root, a_info);
+		maintain.put(node, a_info);
 
 		/*
 		 * if the node is the leaf, we can output the probskyline now.
@@ -106,18 +115,18 @@ public class KDTreeInfo{
 
 	public void CompFinalSkyProb(HashMap<Integer, Double> theta, KDNode node){
 		
-		KDpoint instPoint = (KDLeaf) node.point;
+		KDPoint instPoint = ((KDLeaf) node).point;
 		instance aInst = KDMapInstance.get(instPoint);
 		int omitObjID = aInst.objectID;
 
 		double ret = 1.0;
 
-		Iterator it = parent.theta.entrySet().iterator();
+		Iterator it = theta.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pairs = (Map.Entry)it.next();	
 			if(pairs.getKey() == omitObjID) continue;
 			
-			double objProb = pairs.getValue();
+			double objProb = (double)pairs.getValue();
 			if(objProb >= 1.0){
 				aInst.instSkyProb = 0.0;
 				return ;
@@ -129,6 +138,5 @@ public class KDTreeInfo{
 		aInst.instSkyProb = ret;
 		return ;
 	}
-
 
 }
