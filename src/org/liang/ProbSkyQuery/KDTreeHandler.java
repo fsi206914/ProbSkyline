@@ -11,6 +11,11 @@ public class KDTreeHandler{
 	public List<KDPoint> KDPList;
 	public KDTree kdTree;
 	public KDTreeInfo KDInfo;
+
+	/**
+	 * The left Corner point of range query.
+	 */
+	public KDPoint min;
 	public int dim;
 
 	void init(List<instance> aList, int dim ){
@@ -20,6 +25,8 @@ public class KDTreeHandler{
 			KDPList.add( util.InstanceToKDPoint(i) );	
 		}
 		createTree();
+		min = new KDPoint(dim);
+		min.setAllCoord(0.0);
 	}	
 
 	void createTree(){
@@ -41,10 +48,20 @@ public class KDTreeHandler{
 	void computeInfo(KDNode node){
 		
 		if(node.parent == null){
-			kdInfo.init(node)	
+			KDArea a_area = new KDArea(dim, min, min);
+			kdInfo.init(node, a_area);	
 		}	
 		else{
-			
+			KDArea parentArea = kdInfo.getArea(node.parent);
+
+			if(!node.getRL()){
+				List<KDPoint> a_list;
+				KDPoint max = (KDRect)node.min;
+
+				KDArea a_area = node.cut(parentArea);
+
+
+			}
 		}
 	}
 

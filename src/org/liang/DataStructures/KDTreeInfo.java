@@ -17,11 +17,16 @@ public class KDTreeInfo{
 		public HashMap<Integer, Double> theta;	
 		public double pi;
 		public int X;
+		public KDArea a_area;
 
 		public Info(HashMap<Integer, Double> theta, double pi, double x){
 			this.theta = theta;	
 			this.pi = pi;
 			this.x = x;
+		}
+
+		public setArea(KDArea a_area){
+			this.a_area = a_area;		
 		}
 	}
 
@@ -40,7 +45,7 @@ public class KDTreeInfo{
 		}
 	}
 
-	public void init(KDNode root){
+	public void init(KDNode root, KDArea a_area){
 		HashMap<Integer, Double> theta = new HashMap<Integer, Double>();
 		for(int i=0; i<objectIDs.size(); i++){
 			int id = objectIDs.get(i);	
@@ -51,6 +56,7 @@ public class KDTreeInfo{
 		double x = 0;
 		
 		Info a_info = new Info(theta, pi, x);
+		a_info.setArea(a_area);
 		maintain.put(root, a_info);
 	}
 

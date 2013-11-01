@@ -57,6 +57,20 @@ public class KDPoint implements  Comparable< KDPoint>
 			__coordinates[dimension] = value;
 		}
 
+	public void setCoord(KDPoint a_point )
+		throws ArrayIndexOutOfBoundsException
+		{
+			for(int i=0; i<__coordinates.length; i++)
+				__coordinates[i] = a_point.__coordinates[i];
+		}
+
+
+	public void setAllCoord(double value)
+		throws ArrayIndexOutOfBoundsException
+		{
+			for(int i=0; i<__coordinates.length; i++)
+				__coordinates[i] = value;
+		}
 	/**
 	 * Returns the value of the coordinate for the specified dimension.
 	 *
@@ -118,6 +132,22 @@ public class KDPoint implements  Comparable< KDPoint>
 		else return 0;
 	}
 
+	@Override
+	public boolean equals(Object obj){
+		if(obj instanceof KDPoint){
+			System.out.println("wrong equals in KDPoint");	
+			return false;
+		}	
+
+		KDPoint other = (KDPoint) obj;
+		assert(__coordinates.length == other.__coordinates.length);
+		for(int i=0; i<__coordinates.length; i++){
+			
+			if(__coordinates[i] == __other.__coordinates[i]) continue;	
+			else return false;
+		}
+		return true;
+	}
 
 	public static void main(String args[]){
 
