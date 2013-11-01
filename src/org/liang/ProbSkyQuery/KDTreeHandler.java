@@ -10,6 +10,7 @@ public class KDTreeHandler{
 
 	public List<KDPoint> KDPList;
 	public KDTree kdTree;
+	public KDTreeInfo KDInfo;
 	public int dim;
 
 	void init(List<instance> aList, int dim ){
@@ -23,9 +24,28 @@ public class KDTreeHandler{
 
 	void createTree(){
 		kdTree = new KDTree<Double>(Double.class, KDPList, dim);
+		kdInfo = new KDTreeInfo();
 	}
 
-	void preOrder(){
-		
+	void Traverse(){
+		preOrder(kdTree.root);	
 	}
+
+	void preOrder(KDNode node){
+		if(node == null) return;	
+		computeInfo(node);
+		preOrder(node.lesser);
+		preOrder(node.greater);
+	}
+
+	void computeInfo(KDNode node){
+		
+		if(node.parent == null){
+			kdInfo.init(node)	
+		}	
+		else{
+			
+		}
+	}
+
 }
