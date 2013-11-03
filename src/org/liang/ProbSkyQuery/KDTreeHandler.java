@@ -8,26 +8,39 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@SuppressWarnings("rawtypes")
-public class KDTreeHandler{
+import org.apache.log4j.Logger;
 
+@SuppressWarnings("rawtypes")
+public class KDTreeHandler implements CompProbSky {
+
+	/*
+	 * input to this class is a list of instance.
+	 */
+	private static org.apache.log4j.Logger log = Logger.getRootLogger();
+	private static boolean verbose = true;
+	public List<instance> instList;
 	public List<KDPoint> KDPList;
+
 	public KDTree kdTree;
 	public KDTreeInfo kdInfo;
 
 	public HashMap<KDPoint, instance> KDMapInstance;
-
+	public HashMap<Integer, Boolean> itemSkyBool;
 	/**
 	 * The left Corner point of range query.
 	 */
 	public KDPoint min;
 	public int dim;
 
-	void init(List<instance> aList, int dim ){
-		this.dim = dim;
+	public KDTreeHandler(List<instance> aList, int dim, HashMap<Integer, Boolean> itemSkyBool){
+		this.dim = dim;	
+		this.instList = aList;
+	}
+
+	void init( ){
 		KDMapInstance = new HashMap<KDPoint, instance>();
 		KDPList = new ArrayList<KDPoint> ();
-		for(instance i: aList){
+		for(instance i: instList){
 			KDPoint aKDPoint =  util.InstanceToKDPoint(i); 
 			KDPList.add(aKDPoint);	
 			KDMapInstance.put(aKDPoint, i);
@@ -38,8 +51,12 @@ public class KDTreeHandler{
 	}	
 
 	void createTree(){
+		
+		if(verbose)
+			log.info("dim =  " + dim);
 		kdTree = new KDTree<Double>(Double.class, KDPList, dim);
 		kdInfo = new KDTreeInfo(KDMapInstance);
+		kdInfo.setObjectBool(itemSkyBool);
 	}
 
 	void Traverse(){
@@ -86,5 +103,13 @@ public class KDTreeHandler{
 			kdInfo.add(node, new KDArea(dim, min, max), a_list);
 
 		}
+	}
+
+	//@Override
+	public void computeProb( ){
+		
+		this.init();
+		this.createTree();
+		this.Traverse();
 	}
 }

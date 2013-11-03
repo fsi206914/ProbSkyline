@@ -10,6 +10,7 @@ JC = javac
 
 CLASSES = \
 		org/liang/GenerateData/instanceGenerator.java\
+		org/liang/ProbSkyQuery/Prune3.java\
 		org/liang/GenerateData/SplitData.java\
 		org/liang/IO/TextInstanceReader.java\
 		org/liang/IO/TextInstanceWriter.java\
@@ -19,12 +20,21 @@ CLASSES = \
 		org/liang/ProbSkyQuery/Prune1And2.java\
 		org/liang/ProbSkyQuery/PruneMain.java\
 		org/liang/KDTree/KDTree.java\
-		org/liang/KDTree/KDTreeMain.java\
+		org/liang/ProbSkyQuery/KDTreeHandler.java\
+		org/liang/ProbSkyQuery/util.java\
+		org/liang/DataStructures/KDTreeInfo.java\
 		org/liang/DataStructures/item.java
+
+KDCLASSES= \
+		org/liang/KDTree/KDTree.java\
 
 default: classes
 
+kdjar: files
+
 classes: $(CLASSES:.java=.class)
+
+files: $(KDCLASSES:.java=.class)
 
 clean:
 	rm *~; rm -rf ../bin/*
