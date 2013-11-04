@@ -42,6 +42,15 @@ public class KDLeaf<T> extends KDNode<T> {
 		return true;
 	}
 
+	public KDArea getArea(){
+		KDPoint retMin = new KDPoint(dim);		
+		retMin.setAllCoord(0.0);
+		
+		KDArea retArea = new KDArea(dim, retMin, point);
+		return retArea;
+	}
+
+
     public boolean equal(Object obj) {
         if (obj == null) return false;
         if (!(obj instanceof KDPoint)) {

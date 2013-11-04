@@ -7,7 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
 public class KDTreeInfo{
+
+	private static org.apache.log4j.Logger log = Logger.getRootLogger();
 
 	public HashMap<KDNode, Info> maintain;	
 	public ArrayList<Integer> objectIDs;
@@ -33,6 +37,7 @@ public class KDTreeInfo{
 
 	public KDTreeInfo(HashMap<KDPoint, instance> KDMapInstance ){
 		maintain = new HashMap<KDNode, Info>();	
+		objectIDs = new ArrayList<Integer>();
 		this.KDMapInstance = KDMapInstance;
 	}
 
@@ -73,8 +78,10 @@ public class KDTreeInfo{
 
 	public void add(KDNode node, KDArea a_area, List<KDPoint> a_list){
 
-		if(node.parent == null) System.out.println("Something Wrong in node parent in KDNodeInfo");
+		if(node.parent == null) 
+			System.out.println("Something Wrong in node parent in KDNodeInfo");
 		
+
 		KDNode parent = node.parent; 
 		Info parentInfo = maintain.get(parent);
 
@@ -95,12 +102,15 @@ public class KDTreeInfo{
 		/*
 		 * adding curret range query result to parent hashmap, to get a new HashMap.
 		 */
-		for(KDPoint kdp: a_list){
-			instance aInst = KDMapInstance.get(kdp);	
-			int objectID = aInst.objectID;
-			double prob = aInst.prob + theta.get(objectID);
-			theta.put(objectID, prob);
+		if(a_list != null){
+			for(KDPoint kdp: a_list){
+				instance aInst = KDMapInstance.get(kdp);	
+				int objectID = aInst.objectID;
+				double prob = aInst.prob + theta.get(objectID);
+				theta.put(objectID, prob);
+			}
 		}
+
 
 		Info a_info = new Info(theta, pi, x);
 		a_info.setArea(a_area);
@@ -109,8 +119,10 @@ public class KDTreeInfo{
 		/*
 		 * if the node is the leaf, we can output the probskyline now.
 		 */
-		if(node.getRL())
+		if(node.getRL()){
+			//System.out.println("begin computing the skyline point.");
 			CompFinalSkyProb(theta,node);
+		}
 	}
 
 	public void CompFinalSkyProb(HashMap<Integer, Double> theta, KDNode node){
@@ -136,7 +148,7 @@ public class KDTreeInfo{
 			}
 		}
 		aInst.instSkyProb = ret;
+		log.info("instance ID = "+ aInst.instanceID+ " prob = "+ret);
 		return ;
 	}
-
 }

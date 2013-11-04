@@ -19,6 +19,8 @@ public class KDArea{
 	}
 
 	public KDArea cut(KDArea parent){
+		
+		//System.out.println(parent.toString() + "  "+ this.toString());
 		int iter = 0;	
 		if(max.equals(parent.max)) return null;
 
@@ -47,5 +49,25 @@ public class KDArea{
 	public void setMinMax(KDPoint a_min, KDPoint a_max){
 		max = a_max;	
 		min = a_min;
+	}
+
+	public String toString(){
+		
+		return "{" + min.toString() + max.toString() + "}";
+	}
+
+	public boolean equals(Object obj){
+		
+		if( !( obj instanceof KDArea) )	{
+			System.out.println("Wrong instance passed here");
+			return false;
+		}	
+
+		KDArea other = (KDArea) obj;
+			
+		if(other.min.equals(this.min) && other.max.equals(this.max))
+			return true;
+			
+		return false;
 	}
 }

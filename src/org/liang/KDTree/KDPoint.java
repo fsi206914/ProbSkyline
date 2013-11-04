@@ -134,7 +134,7 @@ public class KDPoint implements  Comparable< KDPoint>
 
 	@Override
 	public boolean equals(Object obj){
-		if(obj instanceof KDPoint){
+		if( !(obj instanceof KDPoint) ){
 			System.out.println("wrong equals in KDPoint");	
 			return false;
 		}	

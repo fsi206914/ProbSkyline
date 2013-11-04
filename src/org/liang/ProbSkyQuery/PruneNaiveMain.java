@@ -5,7 +5,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
-public class PruneMain{
+public class PruneNaiveMain{
 
 	private static org.apache.log4j.Logger log = Logger.getRootLogger();
 	public static boolean verbose = true;
@@ -24,9 +24,9 @@ public class PruneMain{
 
 	public static void main(String [] args){
 		
-		initializeLogger("KDProb");
-		Prune3 P3 = new Prune3();	
+		initializeLogger("NaiveProb");
+		NaivePrune NP = new NaivePrune();	
 		//P12.preprocess();
-		P3.prune();
+		NP.prune();
 	}	
 }

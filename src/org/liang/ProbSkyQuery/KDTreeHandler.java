@@ -13,11 +13,10 @@ import org.apache.log4j.Logger;
 @SuppressWarnings("rawtypes")
 public class KDTreeHandler implements CompProbSky {
 
+	private static org.apache.log4j.Logger log = Logger.getRootLogger();
 	/*
 	 * input to this class is a list of instance.
 	 */
-	private static org.apache.log4j.Logger log = Logger.getRootLogger();
-	private static boolean verbose = true;
 	public List<instance> instList;
 	public List<KDPoint> KDPList;
 
@@ -35,6 +34,7 @@ public class KDTreeHandler implements CompProbSky {
 	public KDTreeHandler(List<instance> aList, int dim, HashMap<Integer, Boolean> itemSkyBool){
 		this.dim = dim;	
 		this.instList = aList;
+		this.itemSkyBool = itemSkyBool;
 	}
 
 	void init( ){
@@ -52,7 +52,7 @@ public class KDTreeHandler implements CompProbSky {
 
 	void createTree(){
 		
-		if(verbose)
+		if(PruneMain.verbose)
 			log.info("dim =  " + dim);
 		kdTree = new KDTree<Double>(Double.class, KDPList, dim);
 		kdInfo = new KDTreeInfo(KDMapInstance);
@@ -79,29 +79,46 @@ public class KDTreeHandler implements CompProbSky {
 			kdInfo.init(node, a_area);	
 		}	
 		else{
-			KDArea parentArea = kdInfo.getArea(node.parent);
+			KDArea parentArea = node.parent.getArea();
 
-			if(parentArea == null) System.out.println("Something Wrong happens here.");
+			if(parentArea == null) System.out.println("Something Wrong happens parentArea here.");
 			/*
 			 * find the new area for range query. a_list is the instance list found in the range.
 			 */
-			KDArea currArea = kdInfo.getArea(node);
-			KDArea a_area = currArea.cut(parentArea);
-			List<KDPoint> a_list = new ArrayList<KDPoint>();
+			KDArea currArea = node.getArea();
+			//if(PruneMain.verbose){
+				//if(!node.getRL())
+					//log.info("KDRect string = "+ ((KDRect)node).toString() );			
+				//else
+					//log.info("KDLeaf string = "+ ((KDLeaf)node).toString() );			
+			//}
+				
+			if(currArea == null)
+				System.out.println("Sth Wrong in currArea");
 
-			kdTree.rangeQuery(kdTree.root, a_area, a_list);
 
-			/*
-			 * old area stored for future search.
-			 */
-			KDPoint max;
-			if(!node.getRL() )
-				max = ((KDRect)node).min;
-			else
-				max = ((KDLeaf)node).point;
+			if(currArea.equals(parentArea)){
+				
+				//System.out.println("node String :" + node.toString());
+				kdInfo.add(node, parentArea, null);
+			}
+			else{
+				KDArea a_area = currArea.cut(parentArea);
+				List<KDPoint> a_list = new ArrayList<KDPoint>();
 
-			kdInfo.add(node, new KDArea(dim, min, max), a_list);
+				kdTree.rangeQuery(kdTree.root, a_area, a_list);
 
+				/*
+				 * old area stored for future search.
+				 */
+				KDPoint max;
+				if(!node.getRL() )
+					max = ((KDRect)node).min;
+				else
+					max = ((KDLeaf)node).point;
+
+				kdInfo.add(node, new KDArea(dim, min, max), a_list);
+			}
 		}
 	}
 

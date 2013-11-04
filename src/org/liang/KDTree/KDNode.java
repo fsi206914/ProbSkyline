@@ -40,6 +40,7 @@ public abstract class KDNode<T> implements Comparable<KDNode<T>> {
     }
 
 	abstract boolean lieIn(KDArea area);
+	public abstract KDArea getArea();
 
     public boolean getRL() {
 

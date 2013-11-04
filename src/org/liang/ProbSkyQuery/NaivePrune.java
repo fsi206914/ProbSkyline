@@ -15,18 +15,18 @@ import java.util.Properties;
 import java.util.Iterator;
 import java.util.Map;
 
-public class Prune3 extends PruneBase{
+public class NaivePrune extends PruneBase{
 	private static org.apache.log4j.Logger log = Logger.getRootLogger();
 
 	public List<instance> instances;
 
-	public Prune3(){
+	public NaivePrune(){
 		super();
 		this.preprocess();	
-		itemsToinstances();
+		//itemsToinstances();
 	}
 
-	public Prune3(List<instance> aList){
+	public NaivePrune(List<instance> aList){
 		
 		instances = aList;	
 	}
@@ -55,9 +55,9 @@ public class Prune3 extends PruneBase{
 	}
 
 	public void compute(){
-		if(PruneMain.verbose  )
-			log.info("in compute function instances size = "+ instances.size());
-		CompProbSky compProbSky = new KDTreeHandler(instances, super.dim, super.ItemSkyBool);
+		//if(PruneMain.verbose  )
+			//log.info("in compute function instances size = "+ instances.size());
+		CompProbSky compProbSky = new NaiveHandler(super.listItem, super.dim);
 		compProbSky.computeProb();
 	}
 }

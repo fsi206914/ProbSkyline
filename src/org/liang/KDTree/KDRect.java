@@ -43,6 +43,15 @@ public class KDRect<T> extends KDNode {
         }
     }
 
+	public KDArea getArea(){
+		KDPoint retMin = new KDPoint(dim);		
+		retMin.setAllCoord(0.0);
+		
+		KDArea retArea = new KDArea(dim, retMin, min);
+		return retArea;
+	}
+
+
     public void setHyperPlane( int a_planeDim, double a_value ) {
         currHP = new hyperplane(a_planeDim, a_value);
     }

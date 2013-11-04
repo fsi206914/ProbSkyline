@@ -40,6 +40,10 @@ public class instance implements Serializable{
 		instanceID = a_id;
 	}
 
+	public boolean DominateAnother(instance a_inst){
+
+		return this.a_point.DominateAnother(a_inst.a_point);
+	}
 	public void setObjectID(int a_id){
 		
 		objectID = a_id;
