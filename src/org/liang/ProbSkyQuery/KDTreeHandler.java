@@ -55,6 +55,11 @@ public class KDTreeHandler implements CompProbSky {
 		if(PruneMain.verbose)
 			log.info("dim =  " + dim);
 		kdTree = new KDTree<Double>(Double.class, KDPList, dim);
+		System.out.println(kdTree.toString());
+
+		if(PruneMain.verbose)
+			log.info("num of Nodes =  " + kdTree.getNodeNum());
+	
 		kdInfo = new KDTreeInfo(KDMapInstance);
 		kdInfo.setObjectBool(itemSkyBool);
 	}
@@ -62,7 +67,6 @@ public class KDTreeHandler implements CompProbSky {
 	void Traverse(){
 		preOrder(kdTree.root);	
 	}
-
 
 	void preOrder(KDNode node){
 		if(node == null) return;	
@@ -86,12 +90,12 @@ public class KDTreeHandler implements CompProbSky {
 			 * find the new area for range query. a_list is the instance list found in the range.
 			 */
 			KDArea currArea = node.getArea();
-			//if(PruneMain.verbose){
-				//if(!node.getRL())
-					//log.info("KDRect string = "+ ((KDRect)node).toString() );			
-				//else
+			if(PruneMain.verbose){
+				//if(node.getRL()){
 					//log.info("KDLeaf string = "+ ((KDLeaf)node).toString() );			
-			//}
+					//log.info("KDArea currArea = "+ currArea.toString() );			
+				//}
+			}
 				
 			if(currArea == null)
 				System.out.println("Sth Wrong in currArea");
@@ -104,6 +108,9 @@ public class KDTreeHandler implements CompProbSky {
 			}
 			else{
 				KDArea a_area = currArea.cut(parentArea);
+				log.info("In else this area= "+ currArea.toString() );			
+				log.info("parent area= "+ parentArea.toString() );			
+				log.info("a_area= "+ a_area.toString() );			
 				List<KDPoint> a_list = new ArrayList<KDPoint>();
 
 				kdTree.rangeQuery(kdTree.root, a_area, a_list);

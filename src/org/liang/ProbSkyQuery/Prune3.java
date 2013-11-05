@@ -39,12 +39,13 @@ public class Prune3 extends PruneBase{
 	}
 
 	public void itemsToinstances(){
-		instances = new ArrayList<instance>();	
+		instances = new ArrayList<instance>();
 		
 		for(int i=0; i<listItem.size(); i++){
 			item aItem = listItem.get(i);
 			for(int j=0; j<aItem.instances.size();j++){
-				instances.add(aItem.instances.get(j));	
+				instances.add(aItem.instances.get(j));
+				//System.out.println("inst ID = "+ aItem.instances.get(j).instanceID);
 			}	
 		}
 	}
@@ -55,7 +56,7 @@ public class Prune3 extends PruneBase{
 	}
 
 	public void compute(){
-		if(PruneMain.verbose  )
+		if( PruneMain.verbose )
 			log.info("in compute function instances size = "+ instances.size());
 		CompProbSky compProbSky = new KDTreeHandler(instances, super.dim, super.ItemSkyBool);
 		compProbSky.computeProb();

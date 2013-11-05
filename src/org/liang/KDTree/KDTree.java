@@ -26,6 +26,7 @@ public class KDTree < T >  {
 
     private int k;
     public KDNode root = null;
+	public static int nodeNum = 0;
     private ALLCOMPARATOR A_COMPARATOR;
 
     private Class<?> name;
@@ -75,6 +76,12 @@ public class KDTree < T >  {
         createNode(list, k, 0, root);
     }
 
+	public int getNodeNum(){
+		
+		return nodeNum;	
+	}
+
+
     /**
      * Create node from list of XYZPoints.
      *
@@ -85,7 +92,9 @@ public class KDTree < T >  {
      */
     public KDNode createNode(List<KDPoint> list, int k, int depth, KDNode currRoot) {
         if (list==null || list.size()==0) return null;
-
+		
+		//----- increase the number of nodes;
+		nodeNum++;
         if(list.size()==1){
             KDNode a_leaf = new KDLeaf(name, k);
             a_leaf.setDepth(depth);
@@ -177,6 +186,30 @@ public class KDTree < T >  {
 		}
 	}
 
+
+	/**
+	 * Another Range Query for cut of two hyper-rectangles.
+	 * 9:16AM
+	 */
+	@SuppressWarnings("unchecked")
+	public void rangeQuery(KDNode node, KDPoint min, KDPoint max,  List<KDPoint> a_list){
+		if(node.getRL()){
+			if( node.lieIn(area) ){
+				a_list.add( ((KDLeaf)node).point );
+			}
+			return;	
+		}
+		else{
+			if( node.lesser.lieIn(area) ){
+				rangeQuery(node.lesser, area, a_list);
+			}
+
+			if( node.greater.lieIn(area) ){
+				rangeQuery(node.greater, area, a_list);
+			}
+		}
+	}
+
     /**
      * Does the tree contain a point in a leaf.
      *
@@ -238,7 +271,7 @@ public class KDTree < T >  {
                 if(node.getRL())
                     builder.append("   "+ ((KDLeaf) node).point.toString() +  "\n" );
                 else
-                    builder.append("\n");
+                    builder.append("   "+ ((KDRect) node).min.toString() +  ((KDRect) node).max.toString() + "\n" );
             } else {
                 builder.append(prefix + (isTail ? "{--- " : "$--- ") + "depth=" + node.depth +  "\n");
             }
@@ -288,31 +321,31 @@ public class KDTree < T >  {
     public static void main (String args[]){
 
 
-//    List<KDPoint> list = new ArrayList<KDPoint>();
-//    list.add(a);list.add(b);list.add(c);list.add(d);
+		//    List<KDPoint> list = new ArrayList<KDPoint>();
+		//    list.add(a);list.add(b);list.add(c);list.add(d);
 
-    List<KDPoint> list = generatePoints();
+		List<KDPoint> list = generatePoints();
 
-    KDTree myTree = new KDTree<Double>(Double.class, list,3);
-    System.out.println(myTree.toString());
+		KDTree myTree = new KDTree<Double>(Double.class, list,3);
+		System.out.println(myTree.toString());
 
 
-	/**
-	 * Test range query algorithm.
-	 *
-	 */ 
-	List<KDPoint> rangeList = new ArrayList<KDPoint>();
-	KDArea KDA = new KDArea(3);
-	KDPoint min = new KDPoint(0.2, 0.2, 0.01);
-	KDPoint max = new KDPoint(0.7, 0.7, 0.9);
-	KDA.setMinMax(min, max);
+		/**
+		 * Test range query algorithm.
+		 *
+		 */ 
+		List<KDPoint> rangeList = new ArrayList<KDPoint>();
+		KDArea KDA = new KDArea(3);
+		KDPoint min = new KDPoint(0.2, 0.2, 0.01);
+		KDPoint max = new KDPoint(0.7, 0.7, 0.9);
+		KDA.setMinMax(min, max);
 
-	myTree.rangeQuery(myTree.root, KDA, rangeList);
+		myTree.rangeQuery(myTree.root, KDA, rangeList);
 
-	for(KDPoint i:rangeList){
-		
-		System.out.println(i.toString());	
+		for(KDPoint i:rangeList){
+
+			System.out.println(i.toString());	
+		}
+
 	}
-
-    }
 }
