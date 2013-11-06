@@ -92,7 +92,7 @@ public class KDRect<T> extends KDNode {
 		else return -1;
     }
 
-	public boolean lieIn(KDArea area){
+	public boolean lieInArea(KDArea area){
 		
 		for(int i=0; i<dim; i++){
 			
@@ -108,15 +108,20 @@ public class KDRect<T> extends KDNode {
 		
 		for(int i=0; i<dim; i++){
 			
-			if(this.min.__coordinates[i] > larger.max.__coordinates[i] || this.max.__coordinates[i] < smaller.min.__coordinates[i] )
+			if(this.min.__coordinates[i] > larger.__coordinates[i] )
 				return false;
 			else
 				continue;
 		}	
-		KDPoint a_min_0 = KDPoint.generate(dim);
 
-		if( lieIn(new KDArea(dim, a_min_0, larger)) )
-		return true;
+		for(int i=0; i<dim; i++){
+			
+			if(this.min.__coordinates[i] < min.__coordinates[i] )
+				continue;
+			else
+				return true;	
+		}	
+		return false;
 	}
 
     public String toString() {

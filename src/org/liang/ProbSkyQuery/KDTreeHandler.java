@@ -88,6 +88,8 @@ public class KDTreeHandler implements CompProbSky {
 			if(parentArea == null) System.out.println("Something Wrong happens parentArea here.");
 			/*
 			 * find the new area for range query. a_list is the instance list found in the range.
+			 * currArea is the current node's area{ (0.0, 0.0), (min_x, min_y)}.
+			 * parentArea is parent node's area{(0.0, 0.0), (min_x, min_y)}.
 			 */
 			KDArea currArea = node.getArea();
 			if(PruneMain.verbose){
@@ -100,7 +102,6 @@ public class KDTreeHandler implements CompProbSky {
 			if(currArea == null)
 				System.out.println("Sth Wrong in currArea");
 
-
 			if(currArea.equals(parentArea)){
 				
 				//System.out.println("node String :" + node.toString());
@@ -112,12 +113,8 @@ public class KDTreeHandler implements CompProbSky {
 				KDPoint max;
 
 				if(!node.getRL()){
-					KDArea a_area = currArea.cut(parentArea);
-					log.info("In else this area= "+ currArea.toString() );			
-					log.info("parent area= "+ parentArea.toString() );			
-					log.info("a_area= "+ a_area.toString() );			
 
-					kdTree.rangeQuery(kdTree.root, a_area, a_list);
+					kdTree.rangeQuery(kdTree.root, parentArea.max, currArea.max, a_list);
 
 					/*
 					 * old area stored for future search.
@@ -127,8 +124,6 @@ public class KDTreeHandler implements CompProbSky {
 					kdInfo.add(node, new KDArea(dim, min, max), a_list);
 				}
 				else{
-
-
 					kdTree.rangeQuery(kdTree.root, currArea.max, parentArea.max, a_list);
 
 					max = ((KDLeaf)node).point;

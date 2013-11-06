@@ -39,7 +39,10 @@ public abstract class KDNode<T> implements Comparable<KDNode<T>> {
         this.RectOrLeaf = RectOrLeaf;
     }
 
-	abstract boolean lieIn(KDArea area);
+	abstract boolean lieIn(KDPoint min, KDPoint max);
+
+	abstract boolean lieInArea(KDArea area);
+
 	public abstract KDArea getArea();
 
     public boolean getRL() {

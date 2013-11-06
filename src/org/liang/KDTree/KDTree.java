@@ -130,24 +130,24 @@ public class KDTree < T >  {
                     node.lesser = createNode(less, k, depth+1, currRoot);
                     node.lesser.parent = node;
 
-                }
+			}
             List<KDPoint> more = list.subList(mediaIndex, list.size());
 
-                if (more.size()>1) {
-                    KDNode rightLeaft = new KDRect(name, k);
-                    rightLeaft.setDepth(depth+1);
-                    rightLeaft.setRL(false);
+			if (more.size()>1) {
+				KDNode rightLeaft = new KDRect(name, k);
+				rightLeaft.setDepth(depth+1);
+				rightLeaft.setRL(false);
 
-                    ((KDRect)rightLeaft).setRightValue((KDRect)node, axis, mid_value);
-                    node.greater = createNode(more, k, depth+1, rightLeaft);
-                    node.greater.parent = node;
-                }
-                else{
-                    node.greater = createNode(more, k, depth+1, currRoot);
-                    node.greater.parent = node;
+				((KDRect)rightLeaft).setRightValue((KDRect)node, axis, mid_value);
+				node.greater = createNode(more, k, depth+1, rightLeaft);
+				node.greater.parent = node;
+			}
+			else{
+				node.greater = createNode(more, k, depth+1, currRoot);
+				node.greater.parent = node;
 
-                }
-            }
+			}
+		}
         return node;
     }
 
@@ -170,17 +170,17 @@ public class KDTree < T >  {
 	@SuppressWarnings("unchecked")
 	public void rangeQuery(KDNode node, KDArea area, List<KDPoint> a_list){
 		if(node.getRL()){
-			if( node.lieIn(area) ){
+			if( node.lieInArea(area) ){
 				a_list.add( ((KDLeaf)node).point );
 			}
 			return;	
 		}
 		else{
-			if( node.lesser.lieIn(area) ){
+			if( node.lesser.lieInArea(area) ){
 				rangeQuery(node.lesser, area, a_list);
 			}
 
-			if( node.greater.lieIn(area) ){
+			if( node.greater.lieInArea(area) ){
 				rangeQuery(node.greater, area, a_list);
 			}
 		}
@@ -201,11 +201,11 @@ public class KDTree < T >  {
 		}
 		else{
 			if( node.lesser.lieIn(min, max) ){
-				rangeQuery(node.lesser, area, a_list);
+				rangeQuery(node.lesser, min, max, a_list);
 			}
 
 			if( node.greater.lieIn(min, max) ){
-				rangeQuery(node.greater, area, a_list);
+				rangeQuery(node.greater, min, max, a_list);
 			}
 		}
 	}

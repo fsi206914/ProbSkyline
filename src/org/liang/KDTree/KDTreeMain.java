@@ -13,22 +13,38 @@ import java.util.Random;
 
 public class KDTreeMain {
 
+	public static List generatePoints() {
+		List<KDPoint> list = new ArrayList<KDPoint>();
+		Random random = new Random();
+
+		for(int i = 0; i < 20; ++i) {
+			double x = random.nextDouble();
+			double y = random.nextDouble();
+			
+			list.add(new KDPoint(x, y));
+		}
+		return list;
+	}
+
+
     public static void main (String args[]){
 
-//    List<GenericPoint> list = new ArrayList<GenericPoint>();
-//    list.add(a);list.add(b);list.add(c);list.add(d);
+		List<KDPoint> list = KDTree.generatePoints();
 
-		List<GenericPoint> list = KDTree.generatePoints();
+		KDTree myTree = new KDTree<Integer>(Double.class, list,2);
 
-		KDTree myTree = new KDTree<Integer>(Integer.class, list,2);
-		myTree.Traverse(myTree.root);
+		KDPoint min = new KDPoint(0.2, 0.2);
+		KDPoint max = new KDPoint(0.7, 0.7);
 
-		GenericPoint<Integer> GP = new GenericPoint(Integer.class, 5, 6);
+		List<KDPoint> rangeList = new ArrayList<KDPoint>();
+		myTree.rangeQuery(myTree.root, min, max, rangeList);
 
-		boolean check = myTree.contains(GP);
+		for(KDPoint i: rangeList){
+			
+			System.out.println(i.toString());
+		}
 
-		if(check)
-			System.out.println(myTree.toString());
+		System.out.println(myTree.toString());
 
 	}
 }

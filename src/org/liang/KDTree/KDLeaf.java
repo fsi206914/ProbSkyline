@@ -30,7 +30,7 @@ public class KDLeaf<T> extends KDNode<T> {
         return "A leaf: " + point.toString() + "\n";
     }
 
-	public boolean lieIn(KDArea area){
+	public boolean lieInArea(KDArea area){
 		
 		for(int i=0; i<dim; i++){
 			
@@ -47,15 +47,20 @@ public class KDLeaf<T> extends KDNode<T> {
 
 		for(int i=0; i<dim; i++){
 
-			if(this.min.__coordinates[i] > larger.max.__coordinates[i] || this.max.__coordinates[i] < smaller.min.__coordinates[i] )
+			if(this.point.__coordinates[i] > larger.__coordinates[i] )
 				return false;
 			else
 				continue;
 		}
-		KDPoint a_min_0 = KDPoint.generate(dim);
 
-		if( lieIn(new KDArea(dim, a_min_0, larger)) )
-			return true;
+		for(int i=0; i<dim; i++){
+
+			if(this.point.__coordinates[i] < smaller.__coordinates[i] )
+				continue;
+			else
+				return true;
+		}
+		return false;
 	}
 
 	public KDArea getArea(){
