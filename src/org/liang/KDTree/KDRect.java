@@ -104,6 +104,21 @@ public class KDRect<T> extends KDNode {
 		return true;
 	}
 
+	public boolean lieIn(KDPoint smaller, KDPoint larger){
+		
+		for(int i=0; i<dim; i++){
+			
+			if(this.min.__coordinates[i] > larger.max.__coordinates[i] || this.max.__coordinates[i] < smaller.min.__coordinates[i] )
+				return false;
+			else
+				continue;
+		}	
+		KDPoint a_min_0 = KDPoint.generate(dim);
+
+		if( lieIn(new KDArea(dim, a_min_0, larger)) )
+		return true;
+	}
+
     public String toString() {
         return "A rectangle: " + min.toString() + "   " + max.toString() + "\n";
     }

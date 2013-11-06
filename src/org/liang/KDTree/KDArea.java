@@ -18,32 +18,27 @@ public class KDArea{
 		min = a_min;
 	}
 
-	public KDArea cut(KDArea parent, boolean leaf){
+	public KDArea cut(KDArea parent){
 		
 		//System.out.println(parent.toString() + "  "+ this.toString());
-		if(leaf == false){
-			if(max.equals(parent.max)) return null;
 
-			int i = 0;
-			for(i=0; i<k; i++){
-				if(parent.max.__coordinates[i] != this.max.__coordinates[i] )
-					break;	
-			}
+		if(max.equals(parent.max)) return null;
 
-			KDPoint a_min = new KDPoint(k);
-			a_min.setAllCoord(0.0);
-			a_min.setCoord(i,parent.max.__coordinates[i]);		
-
-			KDArea ret = new KDArea(k, a_min, max);
+		int i = 0;
+		for(i=0; i<k; i++){
+			if(parent.max.__coordinates[i] != this.max.__coordinates[i] )
+				break;	
 		}
-		else{
-			
-			
-			
-		}
+
+		KDPoint a_min = new KDPoint(k);
+		a_min.setAllCoord(0.0);
+		a_min.setCoord(i,parent.max.__coordinates[i]);		
+
+		KDArea ret = new KDArea(k, a_min, max);
+
 		return ret;
 	}
-	
+
 	public void setMin(KDPoint a_point){
 		min = a_point;	
 	}

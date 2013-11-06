@@ -91,6 +91,13 @@ public class KDPoint implements  Comparable< KDPoint>
 	 */
 	public int getDim() { return __coordinates.length; }
 
+	public static KDPoint generate(int a_dim){
+		
+		KDPoint	a_point = new KDPoint(a_dim);
+		a_point.setAllCoord(0.0);
+		return a_point;
+	}
+
 
 	/**
 	 * Returns a string representation of the point, listing its

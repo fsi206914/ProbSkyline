@@ -107,24 +107,34 @@ public class KDTreeHandler implements CompProbSky {
 				kdInfo.add(node, parentArea, null);
 			}
 			else{
-				KDArea a_area = currArea.cut(parentArea);
-				log.info("In else this area= "+ currArea.toString() );			
-				log.info("parent area= "+ parentArea.toString() );			
-				log.info("a_area= "+ a_area.toString() );			
+				
 				List<KDPoint> a_list = new ArrayList<KDPoint>();
-
-				kdTree.rangeQuery(kdTree.root, a_area, a_list);
-
-				/*
-				 * old area stored for future search.
-				 */
 				KDPoint max;
-				if(!node.getRL() )
-					max = ((KDRect)node).min;
-				else
-					max = ((KDLeaf)node).point;
 
-				kdInfo.add(node, new KDArea(dim, min, max), a_list);
+				if(!node.getRL()){
+					KDArea a_area = currArea.cut(parentArea);
+					log.info("In else this area= "+ currArea.toString() );			
+					log.info("parent area= "+ parentArea.toString() );			
+					log.info("a_area= "+ a_area.toString() );			
+
+					kdTree.rangeQuery(kdTree.root, a_area, a_list);
+
+					/*
+					 * old area stored for future search.
+					 */
+					max = ((KDRect)node).min;
+
+					kdInfo.add(node, new KDArea(dim, min, max), a_list);
+				}
+				else{
+
+
+					kdTree.rangeQuery(kdTree.root, currArea.max, parentArea.max, a_list);
+
+					max = ((KDLeaf)node).point;
+					
+					kdInfo.add(node, new KDArea(dim, min, max), a_list);
+				}
 			}
 		}
 	}

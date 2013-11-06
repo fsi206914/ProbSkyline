@@ -194,17 +194,17 @@ public class KDTree < T >  {
 	@SuppressWarnings("unchecked")
 	public void rangeQuery(KDNode node, KDPoint min, KDPoint max,  List<KDPoint> a_list){
 		if(node.getRL()){
-			if( node.lieIn(area) ){
+			if( node.lieIn(min, max) ){
 				a_list.add( ((KDLeaf)node).point );
 			}
 			return;	
 		}
 		else{
-			if( node.lesser.lieIn(area) ){
+			if( node.lesser.lieIn(min, max) ){
 				rangeQuery(node.lesser, area, a_list);
 			}
 
-			if( node.greater.lieIn(area) ){
+			if( node.greater.lieIn(min, max) ){
 				rangeQuery(node.greater, area, a_list);
 			}
 		}
