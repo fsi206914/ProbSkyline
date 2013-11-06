@@ -29,6 +29,7 @@ public class KDTreeHandler implements CompProbSky {
 	 * The left Corner point of range query.
 	 */
 	public KDPoint min;
+	public KDPoint max;
 	public int dim;
 
 	public KDTreeHandler(List<instance> aList, int dim, HashMap<Integer, Boolean> itemSkyBool){
@@ -48,6 +49,8 @@ public class KDTreeHandler implements CompProbSky {
 		createTree();
 		min = new KDPoint(dim);
 		min.setAllCoord(0.0);
+		max = new KDPoint(dim);
+		max.setAllCoord(1.0);
 	}	
 
 	void createTree(){
@@ -55,7 +58,7 @@ public class KDTreeHandler implements CompProbSky {
 		if(PruneMain.verbose)
 			log.info("dim =  " + dim);
 		kdTree = new KDTree<Double>(Double.class, KDPList, dim);
-		System.out.println(kdTree.toString());
+		//System.out.println(kdTree.toString());
 
 		if(PruneMain.verbose)
 			log.info("num of Nodes =  " + kdTree.getNodeNum());
@@ -79,7 +82,7 @@ public class KDTreeHandler implements CompProbSky {
 	void computeInfo(KDNode node){
 		
 		if(node.parent == null){
-			KDArea a_area = new KDArea(dim, min, min);
+			KDArea a_area = new KDArea(dim, min, max);
 			kdInfo.init(node, a_area);	
 		}	
 		else{
@@ -93,16 +96,15 @@ public class KDTreeHandler implements CompProbSky {
 			 */
 			KDArea currArea = node.getArea();
 			if(PruneMain.verbose){
-				//if(node.getRL()){
-					//log.info("KDLeaf string = "+ ((KDLeaf)node).toString() );			
+				if(node.getRL()){
 					//log.info("KDArea currArea = "+ currArea.toString() );			
-				//}
+				}
 			}
 				
 			if(currArea == null)
 				System.out.println("Sth Wrong in currArea");
 
-			if(currArea.equals(parentArea)){
+		   if(currArea.equals(parentArea)){
 				
 				//System.out.println("node String :" + node.toString());
 				kdInfo.add(node, parentArea, null);
@@ -113,21 +115,17 @@ public class KDTreeHandler implements CompProbSky {
 				KDPoint max;
 
 				if(!node.getRL()){
-
 					kdTree.rangeQuery(kdTree.root, parentArea.max, currArea.max, a_list);
 
 					/*
 					 * old area stored for future search.
 					 */
 					max = ((KDRect)node).min;
-
 					kdInfo.add(node, new KDArea(dim, min, max), a_list);
 				}
 				else{
-					kdTree.rangeQuery(kdTree.root, currArea.max, parentArea.max, a_list);
-
+					kdTree.rangeQuery(kdTree.root, parentArea.max, currArea.max, a_list);
 					max = ((KDLeaf)node).point;
-					
 					kdInfo.add(node, new KDArea(dim, min, max), a_list);
 				}
 			}

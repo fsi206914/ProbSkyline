@@ -119,6 +119,7 @@ public class KDTreeInfo{
 		/*
 		 * if the node is the leaf, we can output the probskyline now.
 		 */
+
 		if(node.getRL()){
 			//System.out.println("begin computing the skyline point.");
 			CompFinalSkyProb(theta,node);
@@ -136,7 +137,7 @@ public class KDTreeInfo{
 		Iterator it = theta.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pairs = (Map.Entry)it.next();	
-			if(pairs.getKey() == omitObjID) continue;
+			if( (Integer)pairs.getKey() == omitObjID) continue;
 			
 			double objProb = (double)pairs.getValue();
 			if(objProb >= 1.0){
@@ -144,10 +145,14 @@ public class KDTreeInfo{
 				return ;
 			}
 			else{
+	
+				//if(aInst.instanceID == 2805 && objProb>0){
+					//log.info("itemID = "+ pairs.getKey()+ "   prob = " + objProb);
+				//}
 				ret *= (1-objProb);	
 			}
 		}
-		aInst.instSkyProb = ret;
+			aInst.instSkyProb = ret;
 		log.info("instance ID = "+ aInst.instanceID+ " prob = "+ret);
 		return ;
 	}

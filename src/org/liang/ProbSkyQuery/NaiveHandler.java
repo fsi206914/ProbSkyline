@@ -56,9 +56,14 @@ public class NaiveHandler implements CompProbSky {
 						if(instOther.DominateAnother(aInst))
 							itemAddition += instOther.prob;
 					}
+					//if(instID == 2805 && itemAddition>0){
+						//log.info("2805's objectID = "+ itemID);
+						//log.info("debug  itemAddition objectID = "+ itemOther.objectID + " itemAddition= " + itemAddition);
+					//}
 
 					skyProb *= (1.0 - itemAddition);
 				}
+				if(skyProb >0 )
 				log.info("a inst ID = "+ instID + "  skyProb = " + skyProb);
 			}
 		}

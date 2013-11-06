@@ -10,6 +10,7 @@ JC = javac
 
 CLASSES = \
 		org/liang/GenerateData/instanceGenerator.java\
+		org/liang/KDTree/KDTreeMain.java\
 		org/liang/ProbSkyQuery/PruneNaiveMain.java\
 		org/liang/ProbSkyQuery/Prune3.java\
 		org/liang/GenerateData/SplitData.java\
@@ -21,6 +22,7 @@ CLASSES = \
 		org/liang/ProbSkyQuery/Prune1And2.java\
 		org/liang/ProbSkyQuery/PruneMain.java\
 		org/liang/KDTree/KDTree.java\
+		org/liang/KDTree/KDPoint.java\
 		org/liang/ProbSkyQuery/KDTreeHandler.java\
 		org/liang/ProbSkyQuery/util.java\
 		org/liang/DataStructures/KDTreeInfo.java\
