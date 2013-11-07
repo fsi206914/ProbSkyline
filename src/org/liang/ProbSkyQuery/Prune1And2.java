@@ -14,9 +14,12 @@ import java.util.Properties;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.liang.Visual.MinMaxVisual;
+
 public class Prune1And2 extends PruneBase{
 
 	public List<item> afterPrune1;
+	public List<instance> instances;
 
 	public Prune1And2(){
 		super();
@@ -29,6 +32,22 @@ public class Prune1And2 extends PruneBase{
 		super.readFile();
 		super.setItemSkyBool();
 	}
+
+	public void itemsToinstances(){
+		instances = new ArrayList<instance>();
+
+		for(int i=0; i<listItem.size(); i++){
+			item aItem = listItem.get(i);
+			if(ItemSkyBool.get(aItem.objectID) == false  )
+				continue;
+				
+			for(int j=0; j<aItem.instances.size();j++){
+				instances.add(aItem.instances.get(j));
+				//System.out.println("inst ID = "+ aItem.instances.get(j).instanceID);
+			}	
+		}
+	}
+
 
 	protected void prune(){
 		rule1();
@@ -47,6 +66,27 @@ public class Prune1And2 extends PruneBase{
 				super.corrIndex.remove(id);	
 		}
 	}
+
+	public void VisualMinMax(HashMap<Integer, instance.point> min, HashMap<Integer, instance.point> max){
+
+		List<instance.point> minList = new ArrayList<instance.point>();
+		List<instance.point> maxList = new ArrayList<instance.point>();
+
+		Iterator iter_max = max.entrySet().iterator();
+		while(iter_max.hasNext()){
+			Map.Entry obj_max = (Map.Entry) iter_max.next();	
+			int objectID= (int) obj_max.getKey();
+			if( !min.containsKey(objectID))
+				System.out.println("Something got wrong in unbalance between min and max");
+			
+			minList.add( min.get(objectID)  );
+			maxList.add( max.get(objectID)  );
+		}
+
+		new MinMaxVisual(minList, maxList);
+	}
+
+
 	@SuppressWarnings("rawtypes")
 	public void rule1(){
 		
@@ -56,6 +96,8 @@ public class Prune1And2 extends PruneBase{
 			HashMap<Integer, instance.point> min = thisArea.min;
 			HashMap<Integer, instance.point> max = thisArea.max;
 
+			VisualMinMax(min, max);
+
 			Iterator iter_max = max.entrySet().iterator();
 			while(iter_max.hasNext()){
 				Map.Entry obj_max = (Map.Entry) iter_max.next();	
@@ -63,7 +105,8 @@ public class Prune1And2 extends PruneBase{
 				int max_id = (int) obj_max.getKey();
 				
 				/*
-				 * if ItemSkyBool hasn't the key, it means that a object's max corner is in this partition, but all objects 				 * don't doesn't appear in the partition.
+				 * if ItemSkyBool hasn't the key, it means that a object's max corner is in this partition, but all objects 				 
+				 * don't  appear in the partition. Or, the objects has been pruned since it is false.
 				 */
 				if( !ItemSkyBool.containsKey(max_id) || ItemSkyBool.get(max_id)== false ) continue;
 
@@ -75,7 +118,8 @@ public class Prune1And2 extends PruneBase{
 					int min_id = (int)obj_min.getKey();
 
 					/*
-					 * if ItemSkyBool hasn't the key, it means that a object's min corner is in this partition, but all objects 				 	 * don't doesn't appear in the partition.
+					 * if ItemSkyBool hasn't the key, it means that a object's min corner is in this partition, but all objects 				 
+					 * don't doesn't appear in the partition.
 					 */
 					if( !ItemSkyBool.containsKey(min_id) || min_id==max_id || ItemSkyBool.get(min_id) == false) continue;
 

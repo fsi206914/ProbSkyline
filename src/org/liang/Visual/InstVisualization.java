@@ -38,7 +38,7 @@ public class InstVisualization extends JFrame {
 		getContentPane().add(pts);
 		for (int i = 0; i < instList.size(); i++) {
 			instance curr = instList.get(i);
-			pts.addPoint(curr.a_point.__coordinates[0]  * 600.0, curr.a_point.__coordinates[1] * 600.0);
+			pts.addPoint(curr.a_point.__coordinates[0]  * 600.0, 600 - curr.a_point.__coordinates[1] * 600.0);
 		}
 
 		pack();

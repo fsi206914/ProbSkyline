@@ -5,6 +5,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
+import org.liang.Visual.InstVisualization;
+
 public class PruneMain{
 
 	private static org.apache.log4j.Logger log = Logger.getRootLogger();
@@ -25,8 +27,14 @@ public class PruneMain{
 	public static void main(String [] args){
 		
 		initializeLogger("KDProb");
-		Prune3 P3 = new Prune3();	
-		//P12.preprocess();
-		P3.prune();
+		//Prune3 P3 = new Prune3();	
+		////P12.preprocess();
+		//P3.prune();
+
+		Prune1And2 P12 = new Prune1And2();
+		P12.prune();
+		P12.itemsToinstances();
+
+		//new InstVisualization(P12.instances);
 	}	
 }

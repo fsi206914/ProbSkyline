@@ -1,5 +1,8 @@
 package org.liang.ProbSkyQuery;
 
+import java.util.List;
+import org.liang.Visual.*;
+
 import org.liang.DataStructures.instance;
 import org.liang.KDTree.KDPoint;
 
@@ -16,5 +19,10 @@ public class util{
 			ret.__coordinates[i] = point.__coordinates[i];	
 		}	
 		return ret;
+	}
+
+	public static void visual(List<instance> instList){
+		
+		new	InstVisualization(instList);
 	}
 }
