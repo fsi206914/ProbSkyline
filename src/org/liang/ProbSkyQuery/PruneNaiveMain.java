@@ -10,8 +10,7 @@ public class PruneNaiveMain{
 	private static org.apache.log4j.Logger log = Logger.getRootLogger();
 	public static boolean verbose = true;
 	
-	public static void initializeLogger(String fileName)
-	{
+	public static void initializeLogger(String fileName){
 		FileAppender fa = new FileAppender();
 		fa.setName("FileLogger");
 		fa.setFile(fileName+ ".log");

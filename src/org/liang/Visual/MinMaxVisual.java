@@ -33,10 +33,13 @@ public class MinMaxVisual extends JFrame {
 		getContentPane().add(sqs);
 		for (int i = 0; i < minList.size(); i++) {
 			instance.point currMin = minList.get(i);
-			instance.point currMax = maxList.get(i);
-			sqs.addRectangle(currMin.__coordinates[0]  * 600.0, 600.0 - currMin.__coordinates[1] * 600.0,  currMax.__coordinates[0]*600.0, 600.0 - currMax.__coordinates[1]*600.0  );
+			sqs.addMin(currMin.__coordinates[0]  * 600.0, 600.0 - currMin.__coordinates[1] * 600.0 );
 		}
 
+		for (int i = 0; i < maxList.size(); i++) {
+			instance.point currMax = maxList.get(i);
+			sqs.addMax(currMax.__coordinates[0]  * 600.0, 600.0 - currMax.__coordinates[1] * 600.0 );
+		}
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -52,24 +55,32 @@ public class MinMaxVisual extends JFrame {
 class Squares extends JPanel {
 	private static final int PREF_W = 800;
 	private static final int PREF_H = PREF_W;
-	private List<Rectangle> squares = new ArrayList<Rectangle>();
 	private List<Rectangle2D.Double> Rectangles = new ArrayList<Rectangle2D.Double>();
 	private List<Ellipse2D.Double> ellipses = new ArrayList<Ellipse2D.Double>();
+	private List<Ellipse2D.Double> ellipsesMin = new ArrayList<Ellipse2D.Double>();
+	private List<Ellipse2D.Double> ellipsesMax = new ArrayList<Ellipse2D.Double>();
 
-	public void addSquare(int x, int y, int width, int height) {
-		Rectangle rect = new Rectangle(x, y, width, height);
-		squares.add(rect);
-	}
 
 	public void addRectangle(double x, double y, double w, double h) {
 		Rectangle2D.Double rect = new Rectangle2D.Double(x, y, w, h);
 		Rectangles.add(rect);
 	}
 
+	public void addMin(double x, double y) {
+		Ellipse2D.Double e1 = new Ellipse2D.Double(x, y, 10.0, 6.0);
+		ellipsesMin.add(e1);
+	}
+
+	public void addMax(double x, double y) {
+		Ellipse2D.Double e1 = new Ellipse2D.Double(x, y, 10.0, 6.0);
+		ellipsesMax.add(e1);
+	}
+
 	@Override
 		public Dimension getPreferredSize() {
 			return new Dimension(PREF_W, PREF_H);
 		}
+
 
 	@Override
 		protected void paintComponent(Graphics g) {
@@ -78,8 +89,21 @@ class Squares extends JPanel {
 			for (Rectangle2D rect : Rectangles) {
 				g2.draw(rect);
 			}
+			
+			g2.setPaint(Color.blue);
 			for (Ellipse2D el : ellipses) { 
 				g2.draw(el);
 			}
+
+			g2.setPaint(Color.green);
+			for (Ellipse2D el : ellipsesMin) { 
+				g2.draw(el);
+			}
+			g2.setPaint(Color.red);
+			for (Ellipse2D el : ellipsesMax) { 
+				g2.draw(el);
+			}
+
+
 		}
 }

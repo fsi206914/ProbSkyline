@@ -34,18 +34,22 @@ public class Prune1And2 extends PruneBase{
 	}
 
 	public void itemsToinstances(){
+
+		int instanceAfter = 0;
 		instances = new ArrayList<instance>();
 
 		for(int i=0; i<listItem.size(); i++){
 			item aItem = listItem.get(i);
-			if(ItemSkyBool.get(aItem.objectID) == false  )
+			if(ItemSkyBool.get(aItem.objectID) == false )
 				continue;
 				
 			for(int j=0; j<aItem.instances.size();j++){
+				instanceAfter++;
 				instances.add(aItem.instances.get(j));
 				//System.out.println("inst ID = "+ aItem.instances.get(j).instanceID);
-			}	
+			}
 		}
+		System.out.println("after Prune 1 the number of instances = "+ instanceAfter);
 	}
 
 
@@ -76,11 +80,22 @@ public class Prune1And2 extends PruneBase{
 		while(iter_max.hasNext()){
 			Map.Entry obj_max = (Map.Entry) iter_max.next();	
 			int objectID= (int) obj_max.getKey();
-			if( !min.containsKey(objectID))
-				System.out.println("Something got wrong in unbalance between min and max");
+			//if( !min.containsKey(objectID))
+				//System.out.println("Something got wrong in unbalance between min and max");
+			
+			//minList.add( min.get(objectID)  );
+			maxList.add( max.get(objectID)  );
+		}
+
+		Iterator iter_min = min.entrySet().iterator();
+		while(iter_min.hasNext()){
+			Map.Entry obj_min = (Map.Entry) iter_min.next();	
+			int objectID= (int) obj_min.getKey();
+			//if( !min.containsKey(objectID))
+				//System.out.println("Something got wrong in unbalance between min and max");
 			
 			minList.add( min.get(objectID)  );
-			maxList.add( max.get(objectID)  );
+			//maxList.add( max.get(objectID)  );
 		}
 
 		new MinMaxVisual(minList, maxList);
@@ -96,7 +111,7 @@ public class Prune1And2 extends PruneBase{
 			HashMap<Integer, instance.point> min = thisArea.min;
 			HashMap<Integer, instance.point> max = thisArea.max;
 
-			VisualMinMax(min, max);
+			//VisualMinMax(min, max);
 
 			Iterator iter_max = max.entrySet().iterator();
 			while(iter_max.hasNext()){
@@ -105,14 +120,16 @@ public class Prune1And2 extends PruneBase{
 				int max_id = (int) obj_max.getKey();
 				
 				/*
-				 * if ItemSkyBool hasn't the key, it means that a object's max corner is in this partition, but all objects 				 
+				 * if ItemSkyBool hasn't the key, it means that a object's max corner is in this partition, but all objects
 				 * don't  appear in the partition. Or, the objects has been pruned since it is false.
 				 */
-				if( !ItemSkyBool.containsKey(max_id) || ItemSkyBool.get(max_id)== false ) continue;
+				if(  ItemSkyBool.get(max_id) == null ||  (Boolean)ItemSkyBool.get(max_id)== false )  continue;
 
 				instance.point max_value = (instance.point)obj_max.getValue();	
 
 				Iterator iter_min = min.entrySet().iterator();
+
+				//System.out.println(" max = "   +max_value.toString());
 				while(iter_min.hasNext()){
 					Map.Entry obj_min = (Map.Entry) iter_min.next();	
 					int min_id = (int)obj_min.getKey();
@@ -121,19 +138,21 @@ public class Prune1And2 extends PruneBase{
 					 * if ItemSkyBool hasn't the key, it means that a object's min corner is in this partition, but all objects 				 
 					 * don't doesn't appear in the partition.
 					 */
-					if( !ItemSkyBool.containsKey(min_id) || min_id==max_id || ItemSkyBool.get(min_id) == false) continue;
-
 					instance.point min_value = (instance.point)obj_min.getValue();	
+					//System.out.println("      min = "   + min_value.toString());
+					if(  ItemSkyBool.get(min_id) == null || min_id==max_id || (Boolean)ItemSkyBool.get(min_id) == false )   continue;
 
 					if(max_value.DominateAnother(min_value)) {
 						ItemSkyBool.put(min_id, false);
+						//System.out.println(" max  dominate min" );
 					}
 				}
 			}
-			
 		}
 		
 	}
+
+
 	@SuppressWarnings("rawtypes")
 	public void rule2(){
 

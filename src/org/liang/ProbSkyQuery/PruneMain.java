@@ -35,6 +35,6 @@ public class PruneMain{
 		P12.prune();
 		P12.itemsToinstances();
 
-		//new InstVisualization(P12.instances);
+		new InstVisualization(P12.instances);
 	}	
 }
