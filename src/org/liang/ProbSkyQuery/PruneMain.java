@@ -25,16 +25,23 @@ public class PruneMain{
 	}
 
 	public static void main(String [] args){
-		
+
 		initializeLogger("KDProb");
-		//Prune3 P3 = new Prune3();	
-		////P12.preprocess();
-		//P3.prune();
+		long tStart = System.currentTimeMillis();
+		Prune3 P3 = new Prune3();	
+		//P12.preprocess();
+		P3.prune();
 
-		Prune1And2 P12 = new Prune1And2();
-		P12.prune();
-		P12.itemsToinstances();
+		//Prune1And2 P12 = new Prune1And2();
+		//P12.prune();
+		//P12.itemsToinstances();
 
-		new InstVisualization(P12.instances);
+		//new InstVisualization(P12.instances);
+
+
+		long tEnd = System.currentTimeMillis();
+		long tDelta = tEnd - tStart;
+		double elapsedSeconds = tDelta / 1000.0;
+		System.out.println("epasedSecond :"+ elapsedSeconds );
 	}	
 }

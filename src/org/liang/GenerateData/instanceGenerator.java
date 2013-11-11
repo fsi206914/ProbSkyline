@@ -30,7 +30,7 @@ public class instanceGenerator{
 	public instanceGenerator(double begin, double end){
 		this.rng = new MersenneTwisterRNG();
 		CUG = new ContinuousUniformGenerator(begin, end, rng);
-		GG = new GaussianGenerator(0.1, 0.025, rng);
+		GG = new GaussianGenerator(0.05, 0.0125, rng);
 	}
 
 	public double IndependantRange(){
@@ -108,8 +108,10 @@ public class instanceGenerator{
 		}
 
 		TIW = new TextInstanceWriter(fileName);
-
-		ContinuousUniformGenerator CUFG	= new ContinuousUniformGenerator(1, 10, IG.rng);
+		/*
+		 * instance number follows the uniform distribution from 1 to 50.
+		 */
+		ContinuousUniformGenerator CUFG	= new ContinuousUniformGenerator(1, 50, IG.rng);
 		for(int i=0; i<objectNum; i++){
 			
 			String line = br.readLine();

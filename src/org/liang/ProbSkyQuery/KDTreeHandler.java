@@ -101,16 +101,14 @@ public class KDTreeHandler implements CompProbSky {
 				}
 			}
 				
-			if(currArea == null)
+	    	if(currArea == null)
 				System.out.println("Sth Wrong in currArea");
 
-		   if(currArea.equals(parentArea)){
-				
+		    if(currArea.equals(parentArea)){
 				//System.out.println("node String :" + node.toString());
 				kdInfo.add(node, parentArea, null);
 			}
 			else{
-				
 				List<KDPoint> a_list = new ArrayList<KDPoint>();
 				KDPoint max;
 

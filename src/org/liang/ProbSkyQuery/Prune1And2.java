@@ -111,7 +111,7 @@ public class Prune1And2 extends PruneBase{
 			HashMap<Integer, instance.point> min = thisArea.min;
 			HashMap<Integer, instance.point> max = thisArea.max;
 
-			//VisualMinMax(min, max);
+			//VisuaMinMax(min, max);
 
 			Iterator iter_max = max.entrySet().iterator();
 			while(iter_max.hasNext()){

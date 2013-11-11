@@ -9,7 +9,10 @@ JC = javac
 	$(JC) $(JFLAGS) $< 
 
 CLASSES = \
+		org/liang/ProbSkyQuery/PruneMain.java\
 		org/liang/GenerateData/instanceGenerator.java\
+		org/liang/Visual/InstVisualization.java\
+		org/liang/Visual/MinMaxVisual.java\
 		org/liang/KDTree/KDTreeMain.java\
 		org/liang/ProbSkyQuery/PruneNaiveMain.java\
 		org/liang/ProbSkyQuery/Prune3.java\
@@ -20,7 +23,6 @@ CLASSES = \
 		org/liang/DataStructures/PartitionInfo.java\
 		org/liang/ProbSkyQuery/PruneBase.java\
 		org/liang/ProbSkyQuery/Prune1And2.java\
-		org/liang/ProbSkyQuery/PruneMain.java\
 		org/liang/KDTree/KDTree.java\
 		org/liang/KDTree/KDPoint.java\
 		org/liang/ProbSkyQuery/KDTreeHandler.java\
