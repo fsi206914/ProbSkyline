@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.*;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.Color;
 
@@ -76,5 +77,11 @@ class Points extends JPanel {
 			for (Ellipse2D el : ellipses) {
 				g2.draw(el);
 			}
+			g.setColor(Color.black);
+			//g.setFont(new Font("SansSerif", Font.BOLD, 8));
+			g.drawString("X Axis", 600, 600);
+			g.drawString("y Axis", 9, 9);
+			g2.draw( new Line2D.Double(0,600,0,0));
+			g2.draw( new Line2D.Double(0,600,600,600));
 		}
 }

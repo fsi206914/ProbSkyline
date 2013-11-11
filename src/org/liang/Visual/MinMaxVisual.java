@@ -16,6 +16,7 @@ import java.awt.Color;
 
 import org.liang.DataStructures.instance;
 
+
 public class MinMaxVisual extends JFrame {
 	public MinMaxVisual() {
 		super("Game Frame");
