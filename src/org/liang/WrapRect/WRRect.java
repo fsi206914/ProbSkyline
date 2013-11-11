@@ -16,12 +16,19 @@ public class WRRect{
     public int dim;
 
     public WRRect(int ndims) {
-        min = new instance.point(ndims);
-        max = new instance.point(ndims);
         dim = ndims;
     }
 
+	public void init(){
+		
+        min = new instance.point(dim);
+        max = new instance.point(dim);
+	}
 
+	public void set(instance.point min, instance.point max){
+		this.min = min;		
+		this.max = max;
+	}
 
     public void setValue(double [] min_value, double [] max_value) {
 			min.setPoint(min_value);
@@ -30,7 +37,7 @@ public class WRRect{
 
 
     public String toString() {
-        return "A rectangle: " + min.toString() + "   " + max.toString() + "\n";
+        return "A rectangle: " + min.toString() + "   " + max.toString() + "-----";
     }
 
     public int compareTo(WRRect o) {

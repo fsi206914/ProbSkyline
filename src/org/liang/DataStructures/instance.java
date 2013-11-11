@@ -142,6 +142,7 @@ public class instance implements Serializable{
 		}
 
 		public double sum(){
+
 			double ret = 0;
 			for(int i=0; i<__coordinates.length; i++)
 				ret+= __coordinates[i];
