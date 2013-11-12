@@ -58,7 +58,8 @@ public class Prune3 extends PruneBase{
 	public void compute(){
 		if( PruneMain.verbose )
 			log.info("in compute function instances size = "+ instances.size());
-		CompProbSky compProbSky = new KDTreeHandler(instances, super.dim, super.ItemSkyBool);
+		//CompProbSky compProbSky = new KDTreeHandler(instances, super.dim, super.ItemSkyBool);
+		CompProbSky compProbSky = new WRTreeHandler(instances, super.dim, super.ItemSkyBool,5);
 		compProbSky.computeProb();
 	}
 }

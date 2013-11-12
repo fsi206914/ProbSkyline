@@ -184,7 +184,12 @@ public class instance implements Serializable{
          */
         @Override
         public int compareTo(point o) {
-			return 1;
+
+			if( this.DominateAnother(o) )
+				return 1;
+			if( o.DominateAnother(this) )
+				return -1;
+			return 0;
         }
 
         /**

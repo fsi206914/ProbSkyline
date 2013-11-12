@@ -64,6 +64,20 @@ public class WRTree{
 	}
 
 
+	public int compPosition(instance.point aPoint){
+		
+		for(int i=RectList.size()-1; i>=0; i--){
+		
+			instance.point max = RectList.get(i).max;	
+			if( A_COMPARATOR.compare(aPoint,max) > 0)
+				continue;
+			else
+				return i+1;
+		}	
+		return 0;
+	}
+
+
     /**
      * Create node from list of XYZPoints.
      *

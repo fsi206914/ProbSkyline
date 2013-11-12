@@ -26,7 +26,7 @@ public class PruneMain{
 
 	public static void main(String [] args){
 
-		initializeLogger("KDProb");
+		initializeLogger("WRProb");
 		long tStart = System.currentTimeMillis();
 		Prune3 P3 = new Prune3();	
 		//P12.preprocess();
