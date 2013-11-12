@@ -47,6 +47,21 @@ public class InstVisualization extends JFrame {
 		setVisible(true);
 	}
 
+	public InstVisualization(List<instance.point> instList, boolean point) {
+		super("Inst Visual");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Points pts= new Points();
+		getContentPane().add(pts);
+		for (int i = 0; i < instList.size(); i++) {
+			instance.point curr = instList.get(i);
+			pts.addPoint(curr.__coordinates[0]  * 600.0, 600 - curr.__coordinates[1] * 600.0);
+		}
+
+		pack();
+		setLocationRelativeTo(null);
+		setVisible(true);
+	}
+
 
 	public static void main(String[] args) {
 		new InstVisualization();

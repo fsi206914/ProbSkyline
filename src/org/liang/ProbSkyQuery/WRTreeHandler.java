@@ -18,10 +18,10 @@ public class WRTreeHandler implements CompProbSky {
 	 */
 	public List<instance> instList;
 	public List< List<instance> > divList; 
-	public List<instance.point> medList; 
+	public static List<instance.point> medList; 
 
 	public WRTree wrTree;
-	//public WRTreeInfo wrInfo;
+	public WRTreeInfo wrTreeInfo;
 	private int dim;
 	//-----------------div ranges from 0 to div(inclusive, inclusive)
 	public int div;
@@ -50,8 +50,8 @@ public class WRTreeHandler implements CompProbSky {
 
 		List<instance.point> aList = WRTree.generatePoints(this.div, this.dim);
 		wrTree = new WRTree(aList, this.dim);
-		//wrTreeInfo = new WRTreeInfo();
-		//wrTreeInfo.setObjectBool(itemSkyBool);
+		wrTreeInfo = new WRTreeInfo();
+		wrTreeInfo.setObjectBool(itemSkyBool);
 	}
 
 	public void computeCenterPoint(){
@@ -93,6 +93,8 @@ public class WRTreeHandler implements CompProbSky {
 
 	void assign(instance aInst){
 
+		//----div paritions increases from 6 to 7 .
+		divList.add(new ArrayList<instance>() );
 		int index = 0;
 		for(int i=0; i<medList.size(); i++){
 			
@@ -113,54 +115,22 @@ public class WRTreeHandler implements CompProbSky {
 
 	@SuppressWarnings("unchecked")
 	void computeInfo(){
+		for(int i=0; i<medList.size(); i++){
+			wrTreeInfo.add(medList.get(i), divList.get(i));	
+		}
+		instance.point max = new instance.point(dim);
+		max.setOneValue(1.0);
+		wrTreeInfo.add(max, divList.get(divList.size()-1));
 		
-   /*     if(node.parent == null){*/
-			//KDArea a_area = new KDArea(dim, min, max);
-			//kdInfo.init(node, a_area);	
-		//}	
-		//else{
-			//KDArea parentArea = node.parent.getArea();
-
-			//if(parentArea == null) System.out.println("Something Wrong happens parentArea here.");
-			/*
-			 * find the new area for range query. a_list is the instance list found in the range.
-			 * currArea is the current node's area{ (0.0, 0.0), (min_x, min_y)}.
-			 * parentArea is parent node's area{(0.0, 0.0), (min_x, min_y)}.
-			 */
-			//KDArea currArea = node.getArea();
-			//if(PruneMain.verbose){
-				//if(node.getRL()){
-					////log.info("KDArea currArea = "+ currArea.toString() );			
-				//}
-			//}
-				
-			//if(currArea == null)
-				//System.out.println("Sth Wrong in currArea");
-
-			//if(currArea.equals(parentArea)){
-				////System.out.println("node String :" + node.toString());
-				//kdInfo.add(node, parentArea, null);
-			//}
-			//else{
-				//List<KDPoint> a_list = new ArrayList<KDPoint>();
-				//KDPoint max;
-
-				//if(!node.getRL()){
-					//kdTree.rangeQuery(kdTree.root, parentArea.max, currArea.max, a_list);
-
-					/*
-					 * old area stored for future search.
-					 */
-					//max = ((KDRect)node).min;
-					//kdInfo.add(node, new KDArea(dim, min, max), a_list);
-				//}
-				//else{
-					//kdTree.rangeQuery(kdTree.root, parentArea.max, currArea.max, a_list);
-					//max = ((KDLeaf)node).point;
-					//kdInfo.add(node, new KDArea(dim, min, max), a_list);
-				//}
-			//}
-		/*}*/
+		for(int i=0; i<instList.size(); i++){
+			
+			instance curr = instList.get(i);
+			for(int j=0; j<medList.size(); j++){
+			
+				if( curr.a_point.DominateAnother( medList.get(j)))
+					wrTreeInfo.compute(curr, j);
+			}
+		}
 	}
 
 	@Override
@@ -168,5 +138,7 @@ public class WRTreeHandler implements CompProbSky {
 		
 		this.createTree();
 		this.computeCenterPoint();
+		this.findAllPartition();
+		this.computeInfo();
 	}
 }

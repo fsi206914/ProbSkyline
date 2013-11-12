@@ -19,6 +19,7 @@ public class WRTree{
 	public static int nodeNum = 0;
 	public static instance.point min;
 	List<WRRect> RectList;
+	WRRect root;
     private ALLCOMPARATOR A_COMPARATOR;
 
     final class ALLCOMPARATOR implements Comparator<instance.point>{
@@ -85,12 +86,25 @@ public class WRTree{
      */
     public void createRect(List<instance.point> list) {
 
-		for(int i=0; i<list.size(); i++){
-			
+		WRRect previous = null;
+		if(list.size() > 1){
+			root =new WRRect(k);
+			previous = root;
+			root.set(min, list.get(0));
+			RectList.add(root);
+		}
+		else
+			System.out.println("too few div number");
+
+		for(int i=1; i<list.size(); i++){
 			WRRect aWRRect = new WRRect(k);
 			aWRRect.set(min, list.get(i));
+			aWRRect.parent = previous; 
+			previous.child = aWRRect;
 			RectList.add(aWRRect);
+			previous = aWRRect;
 		}
+
     }
 
 

@@ -13,6 +13,9 @@ public class WRRect{
     public instance.point min;
     public instance.point max;
 
+	public WRRect child = null;
+	public WRRect parent = null;
+
     public int dim;
 
     public WRRect(int ndims) {
