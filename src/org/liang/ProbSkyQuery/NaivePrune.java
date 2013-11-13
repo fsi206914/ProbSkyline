@@ -26,9 +26,9 @@ public class NaivePrune extends PruneBase{
 		//itemsToinstances();
 	}
 
-	public NaivePrune(List<instance> aList){
+	public NaivePrune(List<item> aList){
 		
-		instances = aList;	
+		super.listItem= aList;	
 	}
 
 	@Override

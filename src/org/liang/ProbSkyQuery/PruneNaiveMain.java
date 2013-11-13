@@ -16,7 +16,7 @@ public class PruneNaiveMain{
 		fa.setFile(fileName+ ".log");
 		fa.setLayout(new PatternLayout("%d{HH:mm:ss}  %m%n  "));
 		fa.setThreshold(Level.INFO);
-		fa.setAppend(true);
+		fa.setAppend(false);
 		fa.activateOptions();
 		log.addAppender(fa);
 	}
@@ -25,8 +25,12 @@ public class PruneNaiveMain{
 		
 		initializeLogger("NaiveProb");
 		long tStart = System.currentTimeMillis();
-		NaivePrune NP = new NaivePrune();	
-		//P12.preprocess();
+
+		Prune1And2 P12 = new Prune1And2();
+		P12.prune();
+
+		NaivePrune NP = new NaivePrune(P12.itemsToItems());
+		//NaivePrune NP = new NaivePrune();
 		NP.prune();
 
 		long tEnd = System.currentTimeMillis();

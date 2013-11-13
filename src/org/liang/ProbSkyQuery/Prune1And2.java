@@ -33,7 +33,7 @@ public class Prune1And2 extends PruneBase{
 		super.setItemSkyBool();
 	}
 
-	public void itemsToinstances(){
+	public List<instance> itemsToinstances(){
 
 		int instanceAfter = 0;
 		instances = new ArrayList<instance>();
@@ -50,7 +50,26 @@ public class Prune1And2 extends PruneBase{
 			}
 		}
 		System.out.println("after Prune 1 the number of instances = "+ instanceAfter);
+		return instances;
 	}
+
+	public List<item> itemsToItems(){
+
+		int itemAfter = 0;
+		List<item> retList= new ArrayList<item>();
+
+		for(int i=0; i<listItem.size(); i++){
+			item aItem = listItem.get(i);
+			if(ItemSkyBool.get(aItem.objectID) == false )
+				continue;
+			
+			itemAfter++; 
+			retList.add(aItem);				
+		}
+		System.out.println("after Prune 1 the number of items= "+ itemAfter);
+		return retList;
+	}
+
 
 
 	protected void prune(){

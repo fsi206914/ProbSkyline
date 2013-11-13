@@ -28,15 +28,16 @@ public class PruneMain{
 
 		initializeLogger("WRProb");
 		long tStart = System.currentTimeMillis();
-		Prune3 P3 = new Prune3();	
-		//P12.preprocess();
-		P3.prune();
+		//Prune3 P3 = new Prune3();	
+		////P12.preprocess();
+		//P3.prune();
 
-		//Prune1And2 P12 = new Prune1And2();
-		//P12.prune();
-		//P12.itemsToinstances();
+		Prune1And2 P12 = new Prune1And2();
+		P12.prune();
 
-		new InstVisualization(WRTreeHandler.medList,true);
+		new InstVisualization(P12.itemsToinstances());
+
+		//new InstVisualization(WRTreeHandler.medList,true);
 
 
 		long tEnd = System.currentTimeMillis();

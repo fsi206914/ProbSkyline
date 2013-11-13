@@ -20,6 +20,7 @@ import java.io.ObjectInputStream;
 import java.util.Properties;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.FileAppender;
@@ -64,6 +65,8 @@ public class SplitData{
 
 	public static void FindleftExtremePoint(item a_item){
 		int instanceNum = a_item.instances.size();
+		HashSet<Integer> areaSet = new HashSet<Integer>();
+
 		instance.point min,max;
 		min = new instance.point(dim);
 		max = new instance.point(dim);
@@ -87,13 +90,31 @@ public class SplitData{
 
 		PartitionInfo aPartInfo = null;
 
-		aPartInfo = outputLists.get(min_area);
-		if(aPartInfo != null)
-			aPartInfo.addMin(a_item.objectID,min);
+		//aPartInfo = outputLists.get(min_area);
+		//if(aPartInfo != null)
+			//aPartInfo.addMin(a_item.objectID,min);
 
-		aPartInfo = outputLists.get(max_area);
-		if(aPartInfo != null)
-			aPartInfo.addMax(a_item.objectID,max);
+		//aPartInfo = outputLists.get(max_area);
+		//if(aPartInfo != null)
+			//aPartInfo.addMax(a_item.objectID,max);
+
+	
+		for(int i=0; i<instanceNum; i++){
+			instance a_instance = a_item.instances.get(i);
+
+			int area = a_instance.a_point.partition(split_Value,splitNum);
+			if(areaSet.contains(area))
+				continue;
+			else{
+				aPartInfo = outputLists.get(area);	
+				if(aPartInfo != null){
+					aPartInfo.addMax(a_item.objectID,max);
+					aPartInfo.addMin(a_item.objectID,min);
+				}
+				areaSet.add(area);
+			}
+		}
+		
 
 		//if(logEnable){
 			//log.info("Adding size = {}", Adding.size() );
@@ -126,99 +147,99 @@ public class SplitData{
 
 	public static void main(String args[]){
 
-	initializeLogger("1");
-	Properties prop = new Properties();
-	ArrayList<item> itemList= new ArrayList<item>();
+		initializeLogger("1");
+		Properties prop = new Properties();
+		ArrayList<item> itemList= new ArrayList<item>();
 
-	try {
-		prop.load(new FileInputStream("liang.prop"));;
+		try {
+			prop.load(new FileInputStream("liang.prop"));;
 
-    	}catch (IOException ex) {
-    		ex.printStackTrace();
-	}
-	int objectNum = Integer.parseInt(prop.getProperty("objectNum"));
-	int dim = Integer.parseInt(prop.getProperty("dim"));
-	int split_index = 0;
+		}catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		int objectNum = Integer.parseInt(prop.getProperty("objectNum"));
+		int dim = Integer.parseInt(prop.getProperty("dim"));
+		int split_index = 0;
 
-	String input = prop.getProperty("srcName");
-	SplitData.dim = dim;
-	SplitData.objectNum = objectNum;
+		String input = prop.getProperty("srcName");
+		SplitData.dim = dim;
+		SplitData.objectNum = objectNum;
 
-	if(logEnable){
-		log.info("dim = "+ dim );
-	}
-
-    try {
-		TextInstanceReader TIR = new TextInstanceReader(input+".txt");
-		TIR.setDim(dim);
-
-		TIR.readListItem(itemList);
-        TIR.close();
-	
-		split_Value = new double[MaxSplitNum];
-	
-		FileReader	fd = new FileReader("liang.split");
-
-		BufferedReader br = new BufferedReader(fd);
-		String line = br.readLine();
-		while(line != null && split_index < MaxSplitNum){
-
-			if(Double.parseDouble(line) >=0 ){
-			
-			split_Value[split_index] = Double.parseDouble(line);
-			if(logEnable){ System.out.println("split index = "+ split_index); }
-			
-			split_index ++;
-			
-			}
-
-		line = br.readLine();
+		if(logEnable){
+			log.info("dim = "+ dim );
 		}
 
-	splitNum = split_index;
-	TIWs = new TextInstanceWriter[splitNum];
+		try {
+			TextInstanceReader TIR = new TextInstanceReader(input+".txt");
+			TIR.setDim(dim);
 
-	for(int i=0;i<TIWs.length;i++){
+			TIR.readListItem(itemList);
+			TIR.close();
 
-		TIWs[i] = new TextInstanceWriter(Integer.toString(i));	
-	}
+			split_Value = new double[MaxSplitNum];
 
-	}
-	catch (FileNotFoundException foef){
-		foef.printStackTrace();
-	}
-	catch (IOException ex){
-		ex.printStackTrace();
-	}
+			FileReader	fd = new FileReader("liang.split");
+
+			BufferedReader br = new BufferedReader(fd);
+			String line = br.readLine();
+			while(line != null && split_index < MaxSplitNum){
+
+				if(Double.parseDouble(line) >=0 ){
+
+					split_Value[split_index] = Double.parseDouble(line);
+					if(logEnable){ System.out.println("split index = "+ split_index); }
+
+					split_index ++;
+
+				}
+
+				line = br.readLine();
+			}
+
+			splitNum = split_index;
+			TIWs = new TextInstanceWriter[splitNum];
+
+			for(int i=0;i<TIWs.length;i++){
+
+				TIWs[i] = new TextInstanceWriter(Integer.toString(i));	
+			}
+
+		}
+		catch (FileNotFoundException foef){
+			foef.printStackTrace();
+		}
+		catch (IOException ex){
+			ex.printStackTrace();
+		}
 
 
 
-	partitionSubList(itemList,split_Value);
+		partitionSubList(itemList,split_Value);
 
-	outputLists = new ArrayList<PartitionInfo>();
+		outputLists = new ArrayList<PartitionInfo>();
 
-	for(int i=0; i<splitNum; i++){
-		PartitionInfo aPartInfo = new PartitionInfo(i,dim);	
-		outputLists.add(aPartInfo);
-	}
+		for(int i=0; i<splitNum; i++){
+			PartitionInfo aPartInfo = new PartitionInfo(i,dim);	
+			outputLists.add(aPartInfo);
+		}
 
-	for(item i:itemList){
-		
-		FindleftExtremePoint(i);
-	}
+		for(item i:itemList){
+
+			FindleftExtremePoint(i);
+		}
 
 
-	try{
+		try{
 
-		FileOutputStream fileOut = new FileOutputStream( "MAX_MIN" );
-		ObjectOutputStream outStream = new ObjectOutputStream(fileOut);
-		outStream.writeObject(outputLists);
-		outStream.flush();
-		outStream.close();
-		fileOut.close();
+			FileOutputStream fileOut = new FileOutputStream( "MAX_MIN" );
+			ObjectOutputStream outStream = new ObjectOutputStream(fileOut);
+			outStream.writeObject(outputLists);
+			outStream.flush();
+			outStream.close();
+			fileOut.close();
 
-	}catch(IOException e){ e.printStackTrace();  }
-	 //catch(ClassNotFoundException cnfe){}
+		}catch(IOException e){ e.printStackTrace();  }
+		//catch(ClassNotFoundException cnfe){}
 
 	}
 }

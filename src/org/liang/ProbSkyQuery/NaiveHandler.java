@@ -63,9 +63,30 @@ public class NaiveHandler implements CompProbSky {
 
 					skyProb *= (1.0 - itemAddition);
 				}
-				if(skyProb >0 )
-				log.info("a inst ID = "+ instID + "  skyProb = " + skyProb);
+				aInst.instSkyProb = skyProb;
+				//if(skyProb >0 )
+				//log.info("a inst ID = "+ instID + "  skyProb = " + skyProb);
 			}
 		}
+
+
+
+		for(int i=0; i<itemList.size(); i++){
+			item aItem = itemList.get(i);	
+			
+			int itemID = aItem.objectID;
+			double objSkyProb = 0.0;
+			for(int j=0; j<aItem.instances.size(); j++){
+				instance aInst = aItem.instances.get(j);	
+
+				objSkyProb += aInst.prob * aInst.instSkyProb;
+			}
+			if(objSkyProb > 0.01)
+				log.info("an object ID = "+ itemID + "  skyProb = " + objSkyProb);
+		}
+
+
+
+
 	}
 }
