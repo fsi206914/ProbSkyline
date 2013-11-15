@@ -7,6 +7,10 @@ import org.apache.log4j.PatternLayout;
 
 import org.liang.Visual.InstVisualization;
 
+/**
+ * Main function of prune 1.1-1.3.
+ */
+
 public class PruneMain{
 
 	private static org.apache.log4j.Logger log = Logger.getRootLogger();
