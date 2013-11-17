@@ -30,6 +30,7 @@ public abstract class PruneBase{
 	public int maxObjectNum;
 	public int ObjectNum;
 	public String testArea;
+	public static double threshold;
 
 	public List<item> listItem;
 	public ArrayList<PartitionInfo> outputLists;
@@ -73,7 +74,9 @@ public abstract class PruneBase{
 		this.maxObjectNum = Integer.parseInt(prop.getProperty("objectNum"));
 		this.dim = Integer.parseInt(prop.getProperty("dim"));
 		this.testArea = prop.getProperty("testArea");
+		threshold = Double.parseDouble(prop.getProperty("threshold"));
 		
+		//System.out.println("PruneBase threshold = "+threshold);
 		corrIndex = new HashMap<Integer, Integer>();
 		listItem = new ArrayList<item>(this.maxObjectNum);
 	}

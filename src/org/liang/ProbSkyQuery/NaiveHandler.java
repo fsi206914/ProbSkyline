@@ -20,10 +20,12 @@ public class NaiveHandler implements CompProbSky {
 	public List<item> itemList;
 
 	public int dim;
+	public double threshold;
 
-	public NaiveHandler (List<item> aList, int dim){
+	public NaiveHandler (List<item> aList, int dim, double threshold){
 		this.dim = dim;	
 		this.itemList= aList;
+		this.threshold = threshold;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -70,6 +72,7 @@ public class NaiveHandler implements CompProbSky {
 		}
 
 
+		System.out.println("Probability threshod = " + this.threshold);
 		int numObject = 0;
 		for(int i=0; i<itemList.size(); i++){
 			item aItem = itemList.get(i);	
@@ -81,7 +84,7 @@ public class NaiveHandler implements CompProbSky {
 
 				objSkyProb += aInst.prob * aInst.instSkyProb;
 			}
-			if(objSkyProb > 0.01){
+			if(objSkyProb > this.threshold){
 				log.info("an object ID = "+ itemID + "  skyProb = " + objSkyProb);
 				numObject++;
 			}
