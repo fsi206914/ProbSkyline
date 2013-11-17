@@ -70,7 +70,7 @@ public class NaiveHandler implements CompProbSky {
 		}
 
 
-
+		int numObject = 0;
 		for(int i=0; i<itemList.size(); i++){
 			item aItem = itemList.get(i);	
 			
@@ -81,12 +81,12 @@ public class NaiveHandler implements CompProbSky {
 
 				objSkyProb += aInst.prob * aInst.instSkyProb;
 			}
-			if(objSkyProb > 0.01)
+			if(objSkyProb > 0.01){
 				log.info("an object ID = "+ itemID + "  skyProb = " + objSkyProb);
+				numObject++;
+			}
 		}
-
-
-
-
+		
+		System.out.println("After Prune 3 the item size = " + numObject);
 	}
 }

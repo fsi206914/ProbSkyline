@@ -31,6 +31,8 @@ public class Prune1And2 extends PruneBase{
 		super.init();
 		super.readFile();
 		super.setItemSkyBool();
+		
+		System.out.println("before Prune 1 the number of items  = "+ listItem.size());
 	}
 
 	public List<instance> itemsToinstances(){
