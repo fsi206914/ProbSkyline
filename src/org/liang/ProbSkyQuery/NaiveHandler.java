@@ -8,6 +8,15 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 import org.apache.log4j.Logger;
 
 @SuppressWarnings("rawtypes")
@@ -21,11 +30,15 @@ public class NaiveHandler implements CompProbSky {
 
 	public int dim;
 	public double threshold;
+	public int area;
+	public HashSet<Integer> candidate;
+	public HashSet<Integer> all;
 
-	public NaiveHandler (List<item> aList, int dim, double threshold){
+	public NaiveHandler (List<item> aList, int dim, double threshold, int area){
 		this.dim = dim;	
 		this.itemList= aList;
 		this.threshold = threshold;
+		this.area = area;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -36,6 +49,9 @@ public class NaiveHandler implements CompProbSky {
 	//@Override
 	public void computeProb( ){
 		
+		candidates = new HashSet<Integer>();
+		all = new HashSet<Integer>();
+
 		for(int i=0; i<itemList.size(); i++){
 			item aItem = itemList.get(i);	
 			
@@ -71,7 +87,6 @@ public class NaiveHandler implements CompProbSky {
 			}
 		}
 
-
 		System.out.println("Probability threshod = " + this.threshold);
 		int numObject = 0;
 		for(int i=0; i<itemList.size(); i++){
@@ -84,12 +99,41 @@ public class NaiveHandler implements CompProbSky {
 
 				objSkyProb += aInst.prob * aInst.instSkyProb;
 			}
+			if(objSkyProb > 0.0){
+				all.add(itemID);	
+			}
 			if(objSkyProb > this.threshold){
-				log.info("an object ID = "+ itemID + "  skyProb = " + objSkyProb);
+				//log.info("an object ID = "+ itemID + "  skyProb = " + objSkyProb);
 				numObject++;
+				candidates.add(itemID);
 			}
 		}
 		
+		File candiFile = new File("./output/candi_"+ Integer.toString(area) );
+		File allFile = new File("./output/all_"+ Integer.toString(area) );
+
+		try{
+
+			FileOutputStream fileOut = new FileOutputStream(candiFile);
+			ObjectOutputStream outStream = new ObjectOutputStream(fileOut);
+			outStream.writeObject(candidates);
+			outStream.flush();
+			outStream.close();
+			fileOut.close();
+
+		}catch(IOException e){ e.printStackTrace();  }
+
+		try{
+
+			FileOutputStream fileOut = new FileOutputStream(allFile);
+			ObjectOutputStream outStream = new ObjectOutputStream(fileOut);
+			outStream.writeObject(all);
+			outStream.flush();
+			outStream.close();
+			fileOut.close();
+
+		}catch(IOException e){ e.printStackTrace();  }
+
 		System.out.println("After Prune 3 the item size = " + numObject);
 	}
 }

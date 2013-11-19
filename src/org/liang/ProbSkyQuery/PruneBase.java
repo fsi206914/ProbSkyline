@@ -118,6 +118,28 @@ public abstract class PruneBase{
 		catch(IOException e){ e.printStackTrace(); }
 	}
 
+	@SuppressWarnings("unchecked")
+	void readFile( int testAreaInt){
+		try{
+			TextInstanceReader TIR = new TextInstanceReader(Integer.toString(testAreaInt)+  ".txt");
+			TIR.setDim(dim);
+			TIR.readListItem(listItem);
+			TIR.close();
+			ObjectNum = listItem.size();
+			FileInputStream input = new FileInputStream(new File("MAX_MIN"));
+			ObjectInputStream in = new ObjectInputStream(input);
+
+//			if(in.readObject() instanceof ArrayList){
+				
+				outputLists = ( ArrayList< PartitionInfo >)in.readObject();
+//			}
+			in.close();
+			input.close(); 
+		}
+		catch(ClassNotFoundException cnfe){ cnfe.printStackTrace();  }
+		catch(IOException e){ e.printStackTrace(); }
+	}
+
 	protected abstract void preprocess();
 	protected abstract void prune();
 

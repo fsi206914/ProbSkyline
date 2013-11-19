@@ -1,13 +1,12 @@
 package org.liang.ProbSkyQuery;
 
-import java.io.File;
-
+import org.liang.ClusterConfig;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
-public class PruneNaiveMain{
+public class Merge{
 
 	private static org.apache.log4j.Logger log = Logger.getRootLogger();
 	public static boolean verbose = true;
@@ -25,7 +24,11 @@ public class PruneNaiveMain{
 
 	public static void main(String [] args){
 		
-		initializeLogger("NaiveProb");
+		initializeLogger("Merge");
+		ClusterConfig conf = new ClusterConfig();
+
+		System.out.println("test numworkers = "+ conf.numWorkers);
+		
 		long tStart = System.currentTimeMillis();
 
 		Prune1And2 P12 = new Prune1And2();
@@ -34,16 +37,6 @@ public class PruneNaiveMain{
 		NaivePrune NP = new NaivePrune(P12.itemsToItems());
 		//NaivePrune NP = new NaivePrune();
 		NP.prune();
-		File theDir = new File("output");
-
-		if (!theDir.exists()) {
-			System.out.println("creating directory: ");
-			boolean result = theDir.mkdir();  
-
-			if(result) {    
-				System.out.println("DIR created");  
-			}
-		}
 
 		long tEnd = System.currentTimeMillis();
 		long tDelta = tEnd - tStart;

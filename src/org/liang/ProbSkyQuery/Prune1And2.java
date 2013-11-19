@@ -21,15 +21,18 @@ public class Prune1And2 extends PruneBase{
 	public List<item> afterPrune1;
 	public List<instance> instances;
 
-	public Prune1And2(){
+	int testAreaInt;
+
+	public Prune1And2 (int testAreaInt){
 		super();
+		this.testAreaInt = testAreaInt;
 		this.preprocess();	
 	}
 
 	@Override
 	protected void preprocess() {
 		super.init();
-		super.readFile();
+		super.readFile(testAreaInt);
 		super.setItemSkyBool();
 		
 		System.out.println("before Prune 1 the number of items  = "+ listItem.size());
