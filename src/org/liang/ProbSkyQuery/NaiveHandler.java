@@ -7,6 +7,7 @@ import org.liang.DataStructures.KDTreeInfo;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,7 +32,7 @@ public class NaiveHandler implements CompProbSky {
 	public int dim;
 	public double threshold;
 	public int area;
-	public HashSet<Integer> candidate;
+	public HashSet<Integer> candidates;
 	public HashSet<Integer> all;
 
 	public NaiveHandler (List<item> aList, int dim, double threshold, int area){

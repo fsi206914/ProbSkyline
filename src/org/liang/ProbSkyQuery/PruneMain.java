@@ -36,13 +36,12 @@ public class PruneMain{
 		////P12.preprocess();
 		//P3.prune();
 
-		Prune1And2 P12 = new Prune1And2();
+		Prune1And2 P12 = new Prune1And2(5);
 		P12.prune();
 
 		new InstVisualization(P12.itemsToinstances());
 
 		//new InstVisualization(WRTreeHandler.medList,true);
-
 
 		long tEnd = System.currentTimeMillis();
 		long tDelta = tEnd - tStart;

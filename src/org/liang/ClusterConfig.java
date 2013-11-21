@@ -22,6 +22,8 @@ public class ClusterConfig {
 	public String testArea;
 	public double threshold;
 
+	/*insert an comment
+	 */
 	public int numWorkers;
 	public String configFile;
 	public double[] splitValue;

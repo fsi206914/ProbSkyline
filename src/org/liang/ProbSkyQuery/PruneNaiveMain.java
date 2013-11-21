@@ -7,6 +7,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
+import java.util.HashSet;
+
 public class PruneNaiveMain{
 
 	private static org.apache.log4j.Logger log = Logger.getRootLogger();
@@ -28,7 +30,7 @@ public class PruneNaiveMain{
 		initializeLogger("NaiveProb");
 		long tStart = System.currentTimeMillis();
 
-		Prune1And2 P12 = new Prune1And2();
+		Prune1And2 P12 = new Prune1And2(2);
 		P12.prune();
 
 		NaivePrune NP = new NaivePrune(P12.itemsToItems());
