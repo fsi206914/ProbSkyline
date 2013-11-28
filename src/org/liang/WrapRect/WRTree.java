@@ -15,7 +15,6 @@ import org.liang.DataStructures.*;
 @SuppressWarnings("rawtypes")
 public class WRTree{
 
-
     private int k;
 	public static int nodeNum = 0;
 	public static instance.point min;

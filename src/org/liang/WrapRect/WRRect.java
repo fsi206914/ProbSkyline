@@ -23,7 +23,6 @@ public class WRRect{
     }
 
 	public void init(){
-		
         min = new instance.point(dim);
         max = new instance.point(dim);
 	}
@@ -49,10 +48,9 @@ public class WRRect{
 
 
     public static void main(String args[]){
-
+		
         //KDRect a = new KDRect(Double.class, 5);
         //a.infiniteHRect(Double.class);
-
     }
 }
 
