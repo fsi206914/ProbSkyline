@@ -19,6 +19,7 @@ public class WRTreeHandler implements CompProbSky {
 	public List<instance> instList;
 	public List< List<instance> > divList; 
 	public static List<instance.point> medList; 
+	public instance.point extreme;
 
 	public WRTree wrTree;
 	public WRTreeInfo wrTreeInfo;
@@ -43,12 +44,29 @@ public class WRTreeHandler implements CompProbSky {
 		medList = new ArrayList<instance.point>();
 	}
 
+	public void findExtreme(){
+		instance.point aPoint = new instance.point(dim);
+		double[] max = new double[dim];
+		for(int i =0; i<max.length; i++){
+			max[i] = 0.0;	
+		}
+		for(int i=0; i<instList.size(); i++){
+
+			instance inst = instList.get(i);
+			for(int j=0; j<dim; j++){
+				if(inst.a_point.__coordinates[j] > max[j])
+					max[j] = inst.a_point.__coordinates[j];
+			}
+		}
+		extreme.setPoint(max);
+	}
+
 
 	void createTree(){
 		if(PruneMain.verbose)
 			log.info("dim =  " + dim);
 
-		List<instance.point> aList = WRTree.generatePoints(this.div, this.dim);
+		medList = WRTree.generatePoints(this.div, this.dim, extreme);
 		wrTree = new WRTree(aList, this.dim);
 		wrTreeInfo = new WRTreeInfo();
 		wrTreeInfo.setObjectBool(itemSkyBool);
@@ -94,7 +112,6 @@ public class WRTreeHandler implements CompProbSky {
 	void assign(instance aInst){
 
 		//----div paritions increases from 6 to 7 .
-		divList.add(new ArrayList<instance>() );
 		int index = 0;
 		for(int i=0; i<medList.size(); i++){
 			
@@ -115,29 +132,28 @@ public class WRTreeHandler implements CompProbSky {
 
 	@SuppressWarnings("unchecked")
 	void computeInfo(){
-		for(int i=0; i<medList.size(); i++){
-			wrTreeInfo.add(medList.get(i), divList.get(i));	
-		}
-		instance.point max = new instance.point(dim);
-		max.setOneValue(1.0);
-		wrTreeInfo.add(max, divList.get(divList.size()-1));
+   /*     for(int i=0; i<medList.size(); i++){*/
+			//wrTreeInfo.add(medList.get(i), divList.get(i));	
+		//}
+		//instance.point max = new instance.point(dim);
+		//max.setOneValue(1.0);
+		//wrTreeInfo.add(max, divList.get(divList.size()-1));
 		
-		for(int i=0; i<instList.size(); i++){
+		//for(int i=0; i<instList.size(); i++){
 			
-			instance curr = instList.get(i);
-			for(int j=0; j<medList.size(); j++){
+			//instance curr = instList.get(i);
+			//for(int j=0; j<medList.size(); j++){
 			
-				if( curr.a_point.DominateAnother( medList.get(j)))
-					wrTreeInfo.compute(curr, j);
-			}
-		}
+				//if( curr.a_point.DominateAnother( medList.get(j)))
+					//wrTreeInfo.compute(curr, j);
+			//}
+		/*}*/
 	}
 
 	@Override
 	public void computeProb( ){
 		
 		this.createTree();
-		this.computeCenterPoint();
 		this.findAllPartition();
 		this.computeInfo();
 	}
