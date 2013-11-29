@@ -96,7 +96,7 @@ public class WRTree{
 		else
 			System.out.println("too few div number");
 
-		for(int i=1; i<list.size(); i++){
+		for(int i=1; i<=list.size(); i++){
 			WRRect aWRRect = new WRRect(k);
 			aWRRect.set(min, list.get(i));
 			aWRRect.parent = previous; 

@@ -66,47 +66,57 @@ public class WRTreeHandler implements CompProbSky {
 		if(PruneMain.verbose)
 			log.info("dim =  " + dim);
 
+		/**
+		 * It contains several procedures to create the wrap rectangle tree:
+		 * 1, find the extreme value of all instances in the partition;
+		 * 2, generate points, which are the top right point of every rectangle, based on the extreme value;
+		 * 3, construction for WRTreeInfo;
+		 * 4, find unique objectids which still necessary for computation.
+		 */
+
+		findExtreme();
 		medList = WRTree.generatePoints(this.div, this.dim, extreme);
-		wrTree = new WRTree(aList, this.dim);
+		wrTree = new WRTree(medList, this.dim);
 		wrTreeInfo = new WRTreeInfo();
 		wrTreeInfo.setObjectBool(itemSkyBool);
+		System.out.println(wrTree.toString());
 	}
 
-	public void computeCenterPoint(){
+   /* public void computeCenterPoint(){*/
 		
-		for(int i=0; i<instList.size(); i++){
+		//for(int i=0; i<instList.size(); i++){
 			
-			int index = wrTree.compPosition(instList.get(i).a_point);	
-			divList.get(index).add(instList.get(i));
-		}
+			//int index = wrTree.compPosition(instList.get(i).a_point);	
+			//divList.get(index).add(instList.get(i));
+		//}
 
-		for(int i=0; i<divList.size(); i++){
+		//for(int i=0; i<divList.size(); i++){
 			
-			List<instance> part = divList.get(i);	
-			instance.point medPoint = compMedian(part);
-			medList.add(medPoint);
-			part.clear();
-		}
-	}
+			//List<instance> part = divList.get(i);	
+			//instance.point medPoint = compMedian(part);
+			//medList.add(medPoint);
+			//part.clear();
+		//}
+	//}
 
 	
-	public instance.point compMedian(List<instance> part){
+	//public instance.point compMedian(List<instance> part){
 		
-		instance.point medPoint = new instance.point(dim);	
-		medPoint.setOneValue(0.0);
-		for(int i=0; i<part.size(); i++){
-			instance curr = part.get(i);	
+		//instance.point medPoint = new instance.point(dim);	
+		//medPoint.setOneValue(0.0);
+		//for(int i=0; i<part.size(); i++){
+			//instance curr = part.get(i);	
 
-			for(int j=0; j<dim; j++){
-				medPoint.__coordinates[j] += curr.a_point.__coordinates[j];
-			}
-		}
+			//for(int j=0; j<dim; j++){
+				//medPoint.__coordinates[j] += curr.a_point.__coordinates[j];
+			//}
+		//}
 
-		for(int j=0; j<dim; j++){
-			medPoint.__coordinates[j] = medPoint.__coordinates[j]/part.size(); 
-		}
-		return medPoint;
-	}
+		//for(int j=0; j<dim; j++){
+			//medPoint.__coordinates[j] = medPoint.__coordinates[j]/part.size(); 
+		//}
+		//return medPoint;
+	/*}*/
 
 
 	void assign(instance aInst){
@@ -132,7 +142,7 @@ public class WRTreeHandler implements CompProbSky {
 
 	@SuppressWarnings("unchecked")
 	void computeInfo(){
-   /*     for(int i=0; i<medList.size(); i++){*/
+	  /* for(int i=0; i<medList.size(); i++){*/
 			//wrTreeInfo.add(medList.get(i), divList.get(i));	
 		//}
 		//instance.point max = new instance.point(dim);
@@ -147,7 +157,7 @@ public class WRTreeHandler implements CompProbSky {
 				//if( curr.a_point.DominateAnother( medList.get(j)))
 					//wrTreeInfo.compute(curr, j);
 			//}
-		/*}*/
+	   /* }*/
 	}
 
 	@Override
