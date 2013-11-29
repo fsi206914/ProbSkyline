@@ -51,8 +51,6 @@ public class KDTreeMain {
 			
 			System.out.println(i.toString());
 		}
-
 		System.out.println(myTree.toString());
-
 	}
 }

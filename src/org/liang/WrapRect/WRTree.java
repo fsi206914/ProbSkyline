@@ -104,9 +104,7 @@ public class WRTree{
 			RectList.add(aWRRect);
 			previous = aWRRect;
 		}
-
     }
-
 
     /**
      * {@inheritDoc}
@@ -122,7 +120,7 @@ public class WRTree{
     }
 
 
-    public static List<instance.point> generatePoints( int div ,int dim) {
+    public static List<instance.point> generatePoints( int div ,int dim, instance.point extreme) {
         List<instance.point> list = new ArrayList<instance.point>();
 
 		double aNum = 1.0/ ((double)div+1.0 );
@@ -130,7 +128,7 @@ public class WRTree{
 		double temp = aNum;
         for(int i = 0; i < div; ++i) {
 			instance.point aPoint = new instance.point(dim);
-			aPoint.setOneValue(aNum);
+			aPoint.setOneValue(extreme, aNum);
 			list.add(aPoint);
 			aNum = aNum+ temp;
         }
@@ -141,9 +139,8 @@ public class WRTree{
 	@SuppressWarnings("unchecked")
     public static void main (String args[]){
 
-		List<instance.point> aList = generatePoints(5,3);
-		WRTree aWRTree = new WRTree(aList, 3);
+		//WRTree aWRTree = new WRTree(aList, 3);
 
-		System.out.println(aWRTree.toString());
+		//System.out.println( aWRTree.toString());
 	}
 }

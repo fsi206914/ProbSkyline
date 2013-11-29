@@ -127,6 +127,14 @@ public class instance implements Serializable{
 			}
 		}
 
+		public void setOneValue(instance.point onePoint, double ratio){
+		
+			for(int i =0; i <dimCount; i++){
+				__coordinates[i] = onePoint.__coordinates[i] * ratio;
+			}
+		}
+
+
 		public void setValue(point a_center, int curr_dim, double a_side){
 			this.__coordinates[curr_dim] = a_center.__coordinates[curr_dim] + a_side;
 		

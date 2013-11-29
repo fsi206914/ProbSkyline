@@ -9,7 +9,8 @@ JC = javac
 	$(JC) $(JFLAGS) $< 
 
 CLASSES = \
-		org/liang/ProbSkyQuery/WRTreeHandler.java\
+		org/liang/WrapRect/WRTreeInfo.java\
+		org/liang/WrapRect/WRTree.java\
 		org/liang/ProbSkyQuery/PruneNaiveMain.java\
 		org/liang/GenerateData/SplitData.java\
 		org/liang/ProbSkyQuery/PruneMain.java\
@@ -23,6 +24,7 @@ CLASSES = \
 		org/liang/DataStructures/instance.java\
 		org/liang/DataStructures/PartitionInfo.java\
 		org/liang/ProbSkyQuery/PruneBase.java\
+		org/liang/ProbSkyQuery/WRTreeHandler.java\
 		org/liang/ProbSkyQuery/Prune1And2.java\
 		org/liang/KDTree/KDTree.java\
 		org/liang/KDTree/KDPoint.java\

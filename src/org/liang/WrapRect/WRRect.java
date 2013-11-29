@@ -10,8 +10,13 @@ import org.liang.DataStructures.instance;
  */
 public class WRRect{
 
-    public instance.point min;
+	/**
+	 * Todo: because it is hard to identify the dimension number, 
+	 * it is complicated to set a static min variable, that could have been set.
+	 * If we knoe the dimension number at ClusterConfig class, we can set it well.
+	 */
     public instance.point max;
+	public instance.point min;
 
 	public WRRect child = null;
 	public WRRect parent = null;
@@ -49,8 +54,6 @@ public class WRRect{
 
     public static void main(String args[]){
 		
-        //KDRect a = new KDRect(Double.class, 5);
-        //a.infiniteHRect(Double.class);
     }
 }
 
