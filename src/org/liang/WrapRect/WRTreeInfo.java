@@ -41,6 +41,8 @@ public class WRTreeInfo{
 			if(ItemSkyBool.get(id) == true)	
 				objectIDs.add(id);
 		}
+		//-------------------- the procedure init the originInfo after setting the object.
+		init();
 	}
 
 	public void init(){
@@ -50,7 +52,7 @@ public class WRTreeInfo{
 			theta.put(id, 0.0);
 		}
 		
-		Info originInfo = new Info(theta);
+		originInfo = new Info(theta);
 	}
 
 	public HashMap<Integer, Double> copyInfo(HashMap<Integer, Double> org){
@@ -63,6 +65,9 @@ public class WRTreeInfo{
 	}
 
 	public void initPartition(WRRect aWR, List<instance>a_list){
+
+		System.out.println(aWR.toString() + "  " + a_list.size());
+
 		HashMap<Integer, Double> theta;
 		if(originInfo != null){
 			theta = copyInfo(originInfo.theta);
@@ -82,77 +87,73 @@ public class WRTreeInfo{
 			System.out.println("Sth Wrong in allocating init() in WRTreeInfo");
 	}
 
+	public void iterateAllDiv(){
 
-	/* public void add(instance.point aPoint, List<instance> a_list){*/
+		Iterator it = maintain.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry)it.next();	
 
-		//HashMap<Integer, Double> theta = copyInfo();
-		//Iterator it = maintain.entrySet().iterator();
-		//while (it.hasNext()) {
-			//Map.Entry pairs = (Map.Entry)it.next();	
+			WRRect aRect = (WRRect)pairs.getKey();
 
-			//instance.point otherPoint = (instance.point)pairs.getKey();
+			Iterator it_2 = maintain.entrySet().iterator();
+			while (it_2.hasNext()) {
+				Map.Entry pairs_2 = (Map.Entry)it_2.next();	
 
-			//if(otherPoint.DominateAnother(aPoint) == true){
-				
-				//HashMap<Integer, Double> addTheta = maintain.get(otherPoint).theta;
+				WRRect otherRect = (WRRect)pairs_2.getKey();
+				if(aRect == otherRect) continue;
 
-				//Iterator it_2 = addTheta.entrySet().iterator();
-				//while (it_2.hasNext()) {
-					//Map.Entry pairs_2 = (Map.Entry)it_2.next();	
-					//if( (double)pairs_2.getValue() > 0){
-						//int objectID = (int)pairs_2.getKey();
-						//double prob = theta.get(objectID) + addTheta.get(objectID);
-						//theta.put(objectID, prob);
-					//}
-				//}
-			//}
-		//}
-		
-		//if(a_list != null){
-			//for(instance inst: a_list){
-				//int objectID = inst.objectID;
-				//double prob = inst.prob + theta.get(objectID);
-				//theta.put(objectID, prob);
-			//}
-		//}
+				if(aRect.DominateAnother(otherRect) == true){
 
+					HashMap<Integer, Double> theta = maintain.get(otherRect).theta;
 
-		//Info a_info = new Info(theta);
-		//maintain.put(aPoint, a_info);
-	/*}*/
+					HashMap<Integer, Double> addTheta = maintain.get(aRect).theta;
 
-	public void compute(instance curr, int index){
-		
+					Iterator it_3 = addTheta.entrySet().iterator();
+					while (it_3.hasNext()) {
+						Map.Entry pairs_3 = (Map.Entry)it_3.next();	
+						if( (double)pairs_3.getValue() > 0){
+							int objectID = (int)pairs_3.getKey();
+							double prob = theta.get(objectID) + addTheta.get(objectID);
+							theta.put(objectID, prob);
+						}
+					}
+				}
+			}
+		}
 	}
 
-	/*public void CompFinalSkyProb(HashMap<Integer, Double> theta, KDNode node){*/
-		
-		//KDPoint instPoint = ((KDLeaf) node).point;
-		//instance aInst = KDMapInstance.get(instPoint);
-		//int omitObjID = aInst.objectID;
 
-		//double ret = 1.0;
+	public void compute(instance curr, int index){
 
-		//Iterator it = theta.entrySet().iterator();
-		//while (it.hasNext()) {
-			//Map.Entry pairs = (Map.Entry)it.next();	
-			//if( (Integer)pairs.getKey() == omitObjID) continue;
-			
-			//double objProb = (double)pairs.getValue();
-			//if(objProb >= 1.0){
-				//aInst.instSkyProb = 0.0;
-				//return ;
-			//}
-			//else{
-	
-				////if(aInst.instanceID == 2805 && objProb>0){
-					////log.info("itemID = "+ pairs.getKey()+ "   prob = " + objProb);
-				////}
-				//ret *= (1-objProb);	
-			//}
-		//}
-			//aInst.instSkyProb = ret;
-		//log.info("instance ID = "+ aInst.instanceID+ " prob = "+ret);
-		//return ;
-	/*}*/
+	}
+
+	public void CompFinalSkyProb(HashMap<Integer, Double> theta, KDNode node){
+
+		KDPoint instPoint = ((KDLeaf) node).point;
+		instance aInst = KDMapInstance.get(instPoint);
+		int omitObjID = aInst.objectID;
+
+		double ret = 1.0;
+
+		Iterator it = theta.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry)it.next();	
+			if( (Integer)pairs.getKey() == omitObjID) continue;
+
+			double objProb = (double)pairs.getValue();
+			if(objProb >= 1.0){
+				aInst.instSkyProb = 0.0;
+				return ;
+			}
+			else{
+
+				//if(aInst.instanceID == 2805 && objProb>0){
+				//log.info("itemID = "+ pairs.getKey()+ "   prob = " + objProb);
+				//}
+				ret *= (1-objProb);	
+			}
+		}
+		aInst.instSkyProb = ret;
+		log.info("instance ID = "+ aInst.instanceID+ " prob = "+ret);
+	}
 }

@@ -18,7 +18,7 @@ public class WRTree{
     private int k;
 	public static int nodeNum = 0;
 	public static instance.point min;
-	List<WRRect> RectList;
+	public List<WRRect> RectList;
 	WRRect root;
     private ALLCOMPARATOR A_COMPARATOR;
 
@@ -87,6 +87,7 @@ public class WRTree{
     public void createRect(List<instance.point> list) {
 
 		WRRect previous = null;
+		//------create the bottem left rectangle.
 		if(list.size() > 1){
 			root =new WRRect(k);
 			previous = root;
@@ -96,7 +97,7 @@ public class WRTree{
 		else
 			System.out.println("too few div number");
 
-		for(int i=1; i<=list.size(); i++){
+		for(int i=1; i<list.size(); i++){
 			WRRect aWRRect = new WRRect(k);
 			aWRRect.set(min, list.get(i));
 			aWRRect.parent = previous; 
@@ -104,6 +105,17 @@ public class WRTree{
 			RectList.add(aWRRect);
 			previous = aWRRect;
 		}
+		/*
+		 * create the topRight rectangle
+		 */
+		WRRect aWRRect = new WRRect(k);
+		instance.point max = new instance.point(k);
+		max.setOneValue(1.0);
+		aWRRect.set(min, max);
+		aWRRect.parent = previous; 
+		previous.child = aWRRect;
+		RectList.add(aWRRect);
+
     }
 
     /**

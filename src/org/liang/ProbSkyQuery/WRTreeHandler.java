@@ -45,6 +45,7 @@ public class WRTreeHandler implements CompProbSky {
 	}
 
 	public void findExtreme(){
+		extreme = new instance.point(dim);
 		instance.point aPoint = new instance.point(dim);
 		double[] max = new double[dim];
 		for(int i =0; i<max.length; i++){
@@ -142,22 +143,23 @@ public class WRTreeHandler implements CompProbSky {
 
 	@SuppressWarnings("unchecked")
 	void computeInfo(){
-	  /* for(int i=0; i<medList.size(); i++){*/
-			//wrTreeInfo.add(medList.get(i), divList.get(i));	
-		//}
-		//instance.point max = new instance.point(dim);
-		//max.setOneValue(1.0);
-		//wrTreeInfo.add(max, divList.get(divList.size()-1));
+		for(int i=0; i<wrTree.RectList.size(); i++){
+
+			wrTreeInfo.initPartition(wrTree.RectList.get(i), divList.get(i));	
+		}
 		
-		//for(int i=0; i<instList.size(); i++){
-			
+		wrTreeInfo.iterateAllDiv();
+
+		/*     for(int i=0; i<instList.size(); i++){*/
+
 			//instance curr = instList.get(i);
 			//for(int j=0; j<medList.size(); j++){
 			
 				//if( curr.a_point.DominateAnother( medList.get(j)))
 					//wrTreeInfo.compute(curr, j);
 			//}
-	   /* }*/
+	   /*}*/
+
 	}
 
 	@Override

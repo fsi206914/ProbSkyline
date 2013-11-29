@@ -51,6 +51,9 @@ public class WRRect{
         return 1;
     }
 
+	public boolean DominateAnother(WRRect other){
+		return this.max.DominateAnother(other.max);
+	}
 
     public static void main(String args[]){
 		
