@@ -30,8 +30,8 @@ public class PruneNaiveMain{
 		initializeLogger("NaiveProb");
 		long tStart = System.currentTimeMillis();
 
-		Prune1And2 P12 = new Prune1And2(2);
-		P12.prune();
+		Prune1And2 P12 = new Prune1And2(4);
+		//P12.prune();
 
 		NaivePrune NP = new NaivePrune(P12.itemsToItems());
 		//NaivePrune NP = new NaivePrune();

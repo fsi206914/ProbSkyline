@@ -6,6 +6,8 @@ import org.liang.WrapRect.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
@@ -143,6 +145,7 @@ public class WRTreeHandler implements CompProbSky {
 
 	@SuppressWarnings("unchecked")
 	void computeInfo(){
+		WRRect start = null;
 		for(int i=0; i<wrTree.RectList.size(); i++){
 
 			wrTreeInfo.initPartition(wrTree.RectList.get(i), divList.get(i));	
@@ -150,23 +153,71 @@ public class WRTreeHandler implements CompProbSky {
 		
 		wrTreeInfo.iterateAllDiv();
 
-		/*     for(int i=0; i<instList.size(); i++){*/
+		System.out.println("instance size = "+ instList.size());
+		for(int i=0; i<instList.size(); i++){
 
-			//instance curr = instList.get(i);
-			//for(int j=0; j<medList.size(); j++){
+			instance curr = instList.get(i);
 			
-				//if( curr.a_point.DominateAnother( medList.get(j)))
-					//wrTreeInfo.compute(curr, j);
-			//}
-	   /*}*/
+			WRRect nearLeftBottemRect = wrTree.compNearRect(curr);
+			WRRect stopRect = wrTree.compStopRect(curr);
+			if(stopRect == null)
+				System.out.println("Sth wtrong in deciding the boundary rectangle!");
 
+			log.info("curr ID = "+ curr.instanceID);
+			HashMap<Integer, Double> theta = null;
+			if(nearLeftBottemRect !=null){
+				theta = wrTreeInfo.getATheta(nearLeftBottemRect);
+				start = nearLeftBottemRect.child;
+
+				//log.info("  start expanding = "+ start.toString());
+			}
+			else{
+				start = wrTree.root;
+				log.info("   start expanding = "+ start.toString());
+				if(wrTreeInfo.originInfo != null)
+					theta = wrTreeInfo.copyInfo(wrTreeInfo.originInfo.theta);
+				else
+					System.out.println("Something wrong in allocaltion originInfo in wrTreeInfo. ");
+
+			}
+			//log.info("   stopRect= "+ stopRect.toString());
+
+
+			do{
+				List<instance> instList = wrTreeInfo.getInstList(start);
+				for(instance inst: instList){
+					int objectID = inst.objectID;
+					if(theta.containsKey(objectID)){
+						double prob = inst.prob + theta.get(objectID);
+						theta.put(objectID, prob);
+					}
+					else{
+						theta.put(objectID, inst.prob);
+					}
+				}
+				start = start.child;
+			}while(start != stopRect && start != stopRect.child);
+
+			if(theta == null)
+				System.out.println("Sth wtrong in allocating theta in WRTREEHandler!");
+
+			Iterator it = theta.entrySet().iterator();
+			double skyProb = 1.0;
+			while (it.hasNext()) {
+				Map.Entry pairs = (Map.Entry)it.next();
+				double aValue = (double) pairs.getValue();
+				skyProb *= (1-aValue);
+			}
+			curr.instSkyProb = skyProb;
+		}
 	}
 
-	@Override
-	public void computeProb( ){
-		
-		this.createTree();
-		this.findAllPartition();
-		this.computeInfo();
+
+		@Override
+			public void computeProb( ){
+
+				this.createTree();
+				this.findAllPartition();
+				this.computeInfo();
+			}
 	}
-}

@@ -10,11 +10,11 @@ JC = javac
 
 CLASSES = \
 		org/liang/WrapRect/WRTreeInfo.java\
+		org/liang/ProbSkyQuery/PruneNaiveMain.java\
 		org/liang/ProbSkyQuery/WRTreeHandler.java\
 		org/liang/ProbSkyQuery/PruneMain.java\
 		org/liang/ProbSkyQuery/Prune3.java\
 		org/liang/WrapRect/WRTree.java\
-		org/liang/ProbSkyQuery/PruneNaiveMain.java\
 		org/liang/GenerateData/SplitData.java\
 		org/liang/GenerateData/instanceGenerator.java\
 		org/liang/Visual/InstVisualization.java\

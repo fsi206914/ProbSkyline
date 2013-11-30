@@ -111,7 +111,7 @@ public class instanceGenerator{
 		/*
 		 * instance number follows the uniform distribution from 1 to 50.
 		 */
-		ContinuousUniformGenerator CUFG	= new ContinuousUniformGenerator(1, 50, IG.rng);
+		ContinuousUniformGenerator CUFG	= new ContinuousUniformGenerator(1, 20, IG.rng);
 		for(int i=0; i<objectNum; i++){
 			
 			String line = br.readLine();

@@ -19,11 +19,15 @@ public class WRTreeInfo{
 	public Info originInfo = null;
 
 	public final class Info{
-		
 		public HashMap<Integer, Double> theta;	
+		public List<instance> instList;
 
 		public Info(HashMap<Integer, Double> theta){
-			this.theta = theta;	
+			this.theta = theta;
+		}
+
+		public void setList(List<instance> aList){
+			instList = aList;
 		}
 	}
 
@@ -81,10 +85,22 @@ public class WRTreeInfo{
 			}
 
 			Info a_info = new Info(theta);
+			a_info.setList(a_list);
 			maintain.put(aWR, a_info);
 		}
 		else
 			System.out.println("Sth Wrong in allocating init() in WRTreeInfo");
+	}
+
+	public List<instance> getInstList(WRRect aRect){
+
+		Info aInfo = maintain.get(aRect);
+		return aInfo.instList;
+	}
+
+	public HashMap<Integer, Double> getATheta(WRRect aRect){
+		return copyInfo(maintain.get(aRect).theta);	
+			
 	}
 
 	public void iterateAllDiv(){
@@ -123,37 +139,33 @@ public class WRTreeInfo{
 	}
 
 
-	public void compute(instance curr, int index){
+   /* public void CompFinalSkyProb(HashMap<Integer, Double> theta, KDNode node){*/
 
-	}
+		//KDPoint instPoint = ((KDLeaf) node).point;
+		//instance aInst = KDMapInstance.get(instPoint);
+		//int omitObjID = aInst.objectID;
 
-	public void CompFinalSkyProb(HashMap<Integer, Double> theta, KDNode node){
+		//double ret = 1.0;
 
-		KDPoint instPoint = ((KDLeaf) node).point;
-		instance aInst = KDMapInstance.get(instPoint);
-		int omitObjID = aInst.objectID;
+		//Iterator it = theta.entrySet().iterator();
+		//while (it.hasNext()) {
+			//Map.Entry pairs = (Map.Entry)it.next();	
+			//if( (Integer)pairs.getKey() == omitObjID) continue;
 
-		double ret = 1.0;
+			//double objProb = (double)pairs.getValue();
+			//if(objProb >= 1.0){
+				//aInst.instSkyProb = 0.0;
+				//return ;
+			//}
+			//else{
 
-		Iterator it = theta.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pairs = (Map.Entry)it.next();	
-			if( (Integer)pairs.getKey() == omitObjID) continue;
-
-			double objProb = (double)pairs.getValue();
-			if(objProb >= 1.0){
-				aInst.instSkyProb = 0.0;
-				return ;
-			}
-			else{
-
-				//if(aInst.instanceID == 2805 && objProb>0){
-				//log.info("itemID = "+ pairs.getKey()+ "   prob = " + objProb);
-				//}
-				ret *= (1-objProb);	
-			}
-		}
-		aInst.instSkyProb = ret;
-		log.info("instance ID = "+ aInst.instanceID+ " prob = "+ret);
-	}
+				////if(aInst.instanceID == 2805 && objProb>0){
+				////log.info("itemID = "+ pairs.getKey()+ "   prob = " + objProb);
+				////}
+				//ret *= (1-objProb);	
+			//}
+		//}
+		//aInst.instSkyProb = ret;
+		//log.info("instance ID = "+ aInst.instanceID+ " prob = "+ret);
+   /* }*/
 }
