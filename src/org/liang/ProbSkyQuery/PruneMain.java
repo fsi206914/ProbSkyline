@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
 import org.liang.Visual.InstVisualization;
+import org.liang.ClusterConfig;
 
 /**
  * Main function of prune 1.1-1.3.
@@ -32,7 +33,9 @@ public class PruneMain{
 
 		initializeLogger("WRProb");
 		long tStart = System.currentTimeMillis();
+		ClusterConfig CC = new ClusterConfig();
 		Prune3 P3 = new Prune3();	
+		P3.setClusterConfig(CC);
 		//P12.preprocess();
 		P3.prune();
 

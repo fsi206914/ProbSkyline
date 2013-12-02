@@ -27,6 +27,7 @@ public class ClusterConfig {
 	public int numWorkers;
 	public String configFile;
 	public double[] splitValue;
+	public int numDiv;
 	public static final int MaxSplitNum = 10;
 	
 	public ClusterConfig(String configFile) {
@@ -58,7 +59,6 @@ public class ClusterConfig {
 			while(line != null && split_index < MaxSplitNum){
 
 				if(Double.parseDouble(line) >=0 ){
-
 					splitValue[split_index] = Double.parseDouble(line);
 					split_index ++;
 				}
@@ -74,6 +74,7 @@ public class ClusterConfig {
 		this.maxObjectNum = Integer.parseInt(prop.getProperty("objectNum"));
 		this.dim = Integer.parseInt(prop.getProperty("dim"));
 		this.testArea = prop.getProperty("testArea");
+		this.numDiv = prop.getProperty("numDiv");
 		threshold = Double.parseDouble(prop.getProperty("threshold"));
 	}
 }

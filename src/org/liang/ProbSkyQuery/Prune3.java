@@ -15,10 +15,13 @@ import java.util.Properties;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.liang.ClusterConfig;
+
 public class Prune3 extends PruneBase{
 	private static org.apache.log4j.Logger log = Logger.getRootLogger();
 
 	public List<instance> instances;
+	public ClusterConfig CC;
 
 	public Prune3(){
 		super();
@@ -29,6 +32,10 @@ public class Prune3 extends PruneBase{
 	public Prune3(List<instance> aList){
 		
 		instances = aList;	
+	}
+
+	public void setClusterConfig(ClusterConfig CC){
+		this.CC = CC;	
 	}
 
 	@Override
@@ -73,7 +80,7 @@ public class Prune3 extends PruneBase{
 		if( PruneMain.verbose )
 			log.info("in compute function instances size = "+ instances.size());
 		//CompProbSky compProbSky = new KDTreeHandler(instances, super.dim, super.ItemSkyBool);
-		CompProbSky compProbSky = new WRTreeHandler(instances, super.dim, super.ItemSkyBool,5);
+		CompProbSky compProbSky = new WRTreeHandler(instances, super.dim, super.ItemSkyBool,CC.numDiv);
 		compProbSky.computeProb();
 		compObjSky();
 	}
