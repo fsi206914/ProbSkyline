@@ -74,7 +74,7 @@ public class ClusterConfig {
 		this.maxObjectNum = Integer.parseInt(prop.getProperty("objectNum"));
 		this.dim = Integer.parseInt(prop.getProperty("dim"));
 		this.testArea = prop.getProperty("testArea");
-		this.numDiv = prop.getProperty("numDiv");
+		this.numDiv = Integer.parseInt(prop.getProperty("numDiv"));
 		threshold = Double.parseDouble(prop.getProperty("threshold"));
 	}
 }

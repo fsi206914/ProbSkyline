@@ -85,6 +85,7 @@ public class NaiveHandler implements CompProbSky {
 				aInst.instSkyProb = skyProb;
 				//if(skyProb >0 )
 				//log.info("a inst ID = "+ instID + "  skyProb = " + skyProb);
+				System.out.println("curr ID = "+ aInst.instanceID + " instSkyProb = "+ skyProb);
 			}
 		}
 
@@ -104,7 +105,7 @@ public class NaiveHandler implements CompProbSky {
 				all.add(itemID);	
 			}
 			if(objSkyProb > this.threshold){
-				//log.info("an object ID = "+ itemID + "  skyProb = " + objSkyProb);
+				log.info("an object ID = "+ itemID + "  skyProb = " + objSkyProb);
 				numObject++;
 				candidates.add(itemID);
 			}

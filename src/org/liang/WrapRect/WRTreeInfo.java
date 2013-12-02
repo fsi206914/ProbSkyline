@@ -103,6 +103,19 @@ public class WRTreeInfo{
 			
 	}
 
+	public void printInfo(Info aInfo){
+		
+		Iterator it = aInfo.theta.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry)it.next();	
+
+			int objectID = (Integer)pairs.getKey();
+			Double prob = (Double)pairs.getValue();
+
+			log.info("objectID = "+ objectID+ " prob = "+prob);
+		}
+	}	
+
 	public void iterateAllDiv(){
 
 		Iterator it = maintain.entrySet().iterator();
@@ -135,13 +148,41 @@ public class WRTreeInfo{
 					}
 				}
 			}
+			log.info("new rectangle --------------------= " + aRect.toString());
+			printInfo(maintain.get(aRect));
 		}
 	}
 
+	public void iterateAllDiv(WRRect root){
 
-   /* public void CompFinalSkyProb(HashMap<Integer, Double> theta, KDNode node){*/
+		while(root.child != null){
 
-		//KDPoint instPoint = ((KDLeaf) node).point;
+			WRRect aRect = root.child;
+			WRRect prev = root;
+
+			HashMap<Integer, Double> theta = maintain.get(aRect).theta;
+
+			HashMap<Integer, Double> addTheta = maintain.get(prev).theta;
+
+			Iterator it_3 = addTheta.entrySet().iterator();
+			while (it_3.hasNext()){
+				Map.Entry pairs_3 = (Map.Entry)it_3.next();	
+				if( (double)pairs_3.getValue() > 0){
+					int objectID = (int)pairs_3.getKey();
+					double prob = theta.get(objectID) + addTheta.get(objectID);
+					theta.put(objectID, prob);
+				}
+			}
+
+			log.info("new rectangle --------------------= " + aRect.toString());
+			printInfo(maintain.get(aRect));
+			root = root.child;
+		}
+	}
+
+	/* public void CompFinalSkyProb(HashMap<Integer, Double> theta, KDNode node){*/
+
+	//KDPoint instPoint = ((KDLeaf) node).point;
 		//instance aInst = KDMapInstance.get(instPoint);
 		//int omitObjID = aInst.objectID;
 

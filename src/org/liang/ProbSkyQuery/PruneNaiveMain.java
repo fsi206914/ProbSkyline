@@ -2,6 +2,8 @@ package org.liang.ProbSkyQuery;
 
 import java.io.File;
 
+import org.liang.ClusterConfig;
+
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -30,7 +32,8 @@ public class PruneNaiveMain{
 		initializeLogger("NaiveProb");
 		long tStart = System.currentTimeMillis();
 
-		Prune1And2 P12 = new Prune1And2(4);
+		ClusterConfig CC = new ClusterConfig();
+		Prune1And2 P12 = new Prune1And2(Integer.parseInt(CC.testArea));
 		//P12.prune();
 
 		NaivePrune NP = new NaivePrune(P12.itemsToItems());

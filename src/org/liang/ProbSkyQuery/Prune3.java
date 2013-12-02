@@ -65,14 +65,14 @@ public class Prune3 extends PruneBase{
 
 	public void compObjSky(){
 		for(int i=0; i<listItem.size(); i++){
-		
 			item curr = listItem.get(i);	
 			double objSkyProb = 0.0;
 			for(int j=0; j<curr.instances.size(); j++){
 				instance aInst = curr.instances.get(j);
 				objSkyProb += aInst.prob * aInst.instSkyProb;
 			}
-			
+		if(objSkyProb >= CC.threshold)
+			log.info("objSkyProb = "+  objSkyProb);
 		}	
 	}
 
@@ -80,7 +80,7 @@ public class Prune3 extends PruneBase{
 		if( PruneMain.verbose )
 			log.info("in compute function instances size = "+ instances.size());
 		//CompProbSky compProbSky = new KDTreeHandler(instances, super.dim, super.ItemSkyBool);
-		CompProbSky compProbSky = new WRTreeHandler(instances, super.dim, super.ItemSkyBool,CC.numDiv);
+		CompProbSky compProbSky = new WRTreeHandler(instances, super.dim, super.ItemSkyBool,CC.numDiv - 1);
 		compProbSky.computeProb();
 		compObjSky();
 	}
