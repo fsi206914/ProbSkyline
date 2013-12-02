@@ -84,6 +84,7 @@ public class WRTree{
 		for(i=0; i<RectList.size(); i++){
 		
 			instance.point max = RectList.get(i).max;	
+			//System.out.println("max = "+ max.toString() + "  aInst = "+aInst.toString());
 			if( A_COMPARATOR.compare(max, aInst.a_point) > 0)
 				continue;
 			else

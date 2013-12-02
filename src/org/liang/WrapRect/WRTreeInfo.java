@@ -175,7 +175,7 @@ public class WRTreeInfo{
 			}
 
 			log.info("new rectangle --------------------= " + aRect.toString());
-			printInfo(maintain.get(aRect));
+			//printInfo(maintain.get(aRect));
 			root = root.child;
 		}
 	}

@@ -153,61 +153,74 @@ public class WRTreeHandler implements CompProbSky {
 		
 		wrTreeInfo.iterateAllDiv(wrTree.root);
 
-		//System.out.println("instance size = "+ instList.size());
-		//for(int i=0; i<instList.size(); i++){
+		System.out.println("instance size = "+ instList.size());
+		/**
+		 * For every instance, we compute its skyline probabilities:
+		 * 1, we first compute the leftbottom rectangle, which fully dominate the instance, and the upper right rectangle which can not 		   dominate the instance;
+		 * 2, Then we copy the Hashmap from bottom left rectangel, and aggreate value at the current rectangle, where some instances dom		   inate curr;
+		 * 3, compute the skyline probability based on the formula.
+		 */
 
-			//instance curr = instList.get(i);
-			
-			//WRRect nearLeftBottemRect = wrTree.compNearRect(curr);
-			//WRRect stopRect = wrTree.compStopRect(curr);
-			//if(stopRect == null)
-				//System.out.println("Sth wtrong in deciding the boundary rectangle!");
+		for(int i=0; i<instList.size(); i++){
 
-			//HashMap<Integer, Double> theta = null;
-			//if(nearLeftBottemRect !=null){
-				//theta = wrTreeInfo.getATheta(nearLeftBottemRect);
-				//start = nearLeftBottemRect.child;
+			instance curr = instList.get(i);
 
-			//}
-			//else{
-				//start = wrTree.root;
-				////log.info("   start expanding = "+ start.toString());
-				//if(wrTreeInfo.originInfo != null)
-					//theta = wrTreeInfo.copyInfo(wrTreeInfo.originInfo.theta);
-				//else
-					//System.out.println("Something wrong in allocaltion originInfo in wrTreeInfo. ");
+			WRRect nearLeftBottemRect = wrTree.compNearRect(curr);
+			WRRect stopRect = wrTree.compStopRect(curr);
+			if(stopRect == null)
+				System.out.println("Sth wtrong in deciding the boundary rectangle!");
 
-			//}
-			////log.info("   stopRect= "+ stopRect.toString());
+			HashMap<Integer, Double> theta = null;
+			if(nearLeftBottemRect !=null){
+				theta = wrTreeInfo.getATheta(nearLeftBottemRect);
+				start = nearLeftBottemRect.child;
 
-			//do{
-				//List<instance> instList = wrTreeInfo.getInstList(start);
-				//for(instance inst: instList){
-					//int objectID = inst.objectID;
-					//if(theta.containsKey(objectID)){
-						//double prob = inst.prob + theta.get(objectID);
-						//theta.put(objectID, prob);
-					//}
-					//else{
-						//theta.put(objectID, inst.prob);
-					//}
-				//}
-				//start = start.child;
-			//}while(start != stopRect && start != stopRect.child);
+			}
+			else{
+				start = wrTree.root;
+				//System.out.println("----start root-="+ start.toString());
+				//log.info("   start expanding = "+ start.toString());
+				if(wrTreeInfo.originInfo != null)
+					theta = wrTreeInfo.copyInfo(wrTreeInfo.originInfo.theta);
+				else
+					System.out.println("Something wrong in allocaltion originInfo in wrTreeInfo. ");
 
-			//if(theta == null)
-				//System.out.println("Sth wtrong in allocating theta in WRTREEHandler!");
+			}
+			//log.info("   stopRect= "+ stopRect.toString());
 
-			//Iterator it = theta.entrySet().iterator();
-			//double skyProb = 1.0;
-			//while (it.hasNext()) {
-				//Map.Entry pairs = (Map.Entry)it.next();
-				//double aValue = (double) pairs.getValue();
-				//skyProb *= (1.0 - aValue);
-			//}
-			//curr.instSkyProb = skyProb;
+			do{
+   /*             System.out.println("start = "+ start.toString());*/
+				//System.out.println("stop = "+ stopRect.toString());
+				/*System.out.println("curr = "+ curr.toString());*/
+				List<instance> instList = wrTreeInfo.getInstList(start);
+				for(instance inst: instList){
+					int objectID = inst.objectID;
+					if(inst.DominateAnother(curr) ){
+						if(theta.containsKey(objectID) ){
+							double prob = inst.prob + theta.get(objectID);
+							theta.put(objectID, prob);
+						}
+						else{
+							theta.put(objectID, inst.prob);
+						}
+					}
+				}
+				start = start.child;
+			}while(start != stopRect.child);
+
+			if(theta == null)
+				System.out.println("Sth wtrong in allocating theta in WRTREEHandler!");
+
+			Iterator it = theta.entrySet().iterator();
+			double skyProb = 1.0;
+			while (it.hasNext()) {
+				Map.Entry pairs = (Map.Entry)it.next();
+				double aValue = (double) pairs.getValue();
+				skyProb *= (1.0 - aValue);
+			}
+			curr.instSkyProb = skyProb;
 			//System.out.println("curr ID = "+ curr.instanceID + " instSkyProb = "+ skyProb);
-		/*}*/
+		}
 	}
 
 
