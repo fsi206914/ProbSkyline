@@ -1,26 +1,29 @@
-JARS = .:./lib/protobuf-java-2.5.0.jar#:../lib/commons-logging-1.1.1-javadoc.jar:../lib/commons-logging-1.1.1-sources.jar:../lib/commons-logging-adapters-1.1.1.jar:../lib/commons-logging-api-1.1.1.jar:../lib/commons-logging-tests.jar
 
+JARS = .:./lib/uncommons-maths-1.2.3.jar:./lib/commons-lang3-3.1.jar:./lib/slf4j-api-1.7.5.jar:./lib/slf4j-simple-1.7.5.jar:./lib/commons-io-2.4.jar:./lib/log4j-1.2.17.jar
 
 all:
 	mkdir bin; cd src; make
 
-Server1:
-	java -cp ./bin:$(JARS) org/liang/SocketMonitor/ServerManager localhost 7890 1
+GenerateInstance:
+	java -cp ./bin:$(JARS) org/liang/GenerateData/instanceGenerator
+	
+SplitData:
+	java -ea -cp ./bin:$(JARS) org/liang/GenerateData/SplitData
 
-Server2:
-	java -cp ./bin:$(JARS) org/liang/SocketMonitor/ServerManager localhost 7891 2
+PruneMain:
+	java -ea -cp ./bin:$(JARS) org/liang/ProbSkyQuery/PruneMain
 
-Server3:
-	java -cp ./bin:$(JARS) org/liang/SocketMonitor/ServerManager localhost 7892 3
+KDTreeMain:
+	java -ea -Xms2048m -cp ./bin:$(JARS) org/liang/KDTree/KDTreeMain
 
-protoc:
-	protoc -I=. --java_out=./src ./command.proto
+PruneNaiveMain:
+	java -ea -Xms2048m -cp ./bin:$(JARS) org/liang/ProbSkyQuery/PruneNaiveMain
+
+Merge:
+	java -ea -Xms2048m -cp ./bin:$(JARS) org/liang/ProbSkyQuery/Merge
+
+KDJAR:
+	jar -cvf ./KDTree.jar ./bin/org/liang/KDTree/*.class
 
 clean:
 	cd src; make clean
-
-writeProtoc:
-	java -cp bin/:lib/protobuf-java-2.5.0.jar  org/liang/AddMachine Mabook
-
-readProtoc:
-	java -cp bin/:lib/protobuf-java-2.5.0.jar  org/liang/ReadMachine Mabook

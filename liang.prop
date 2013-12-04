@@ -1,1 +1,8 @@
-machines.address=localhost:7890,localhost:7891,localhost:7892
+# created at October.15th
+
+objectNum = 5000
+dim = 2
+srcName = ./rawData/aD2T2M0C5000
+testArea = 5
+threshold = 0.01
+numDiv = 9
